@@ -4,6 +4,8 @@ Firmata-compatible BeagleBone Black device API
 
 Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick Waldron](https://github.com/rwaldron)
 
+**Work in Progress, needs testing**
+
 ## The MIT License (MIT)
 
 Copyright (c) Julian Duque 2014
