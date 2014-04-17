@@ -1,0 +1,37 @@
+{
+  "name": "beaglebone-io",
+  "version": "0.0.0",
+  "description": "Firmata-compatible BeagleBone Black device API",
+  "main": "lib/beaglebone",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/julianduque/beaglebone-io"
+  },
+  "keywords": [
+    "firmata",
+    "beaglebone",
+    "fohnny-five"
+  ],
+  "author": "Julian Duque <julianduquej@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/julianduque/beaglebone-io/issues"
+  },
+  "homepage": "https://github.com/julianduque/beaglebone-io",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "nodeunit": "^0.8.6",
+    "sinon": "^1.9.1",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt-jsbeautifier": "^0.2.7",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "rewire": "^2.0.0"
+  },
+  "dependencies": {
+    "bonescript": "^0.2.4"
+  }
+}
