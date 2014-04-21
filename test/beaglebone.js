@@ -2,13 +2,19 @@ var rewire = require("rewire");
 var BeagleBone = rewire("../lib/beaglebone");
 var Emitter = require("events").EventEmitter;
 var sinon = require("sinon");
+var b = require('bonescript');
 
 var bStub = {
   pinMode: function (pin, mode) {},
-  digitalRead: function (pin, handler) {},
-  analogRead: function (pin, handler) {},
+  digitalRead: function (pin, handler) {
+    handler(null);
+  },
+  analogRead: function (pin, handler) {
+    handler(null);
+  },
   digitalWrite: function (pin, value) {},
-  analogWrite: function (pin, value) {}
+  analogWrite: function (pin, value) {},
+  map: b.map
 };
 
 BeagleBone.__set__("b", bStub);
@@ -147,19 +153,17 @@ exports["BeagleBone"] = {
   }
 };
 
-
 exports["BeagleBone.prototype.analogRead"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    this.analogRead = sinon.spy(BeagleBone.prototype, "analogRead");
+    this.port = "P9_39";
     this.beaglebone = new BeagleBone();
 
     done();
   },
   tearDown: function(done) {
     BeagleBone.reset();
-
     restore(this);
 
     this.beaglebone.removeAllListeners("analog-read-A0");
@@ -170,10 +174,8 @@ exports["BeagleBone.prototype.analogRead"] = {
   correctMode: function(test) {
     test.expect(1);
 
-    // Reading from an ANALOG pin should set its mode to 1 ("out")
     this.beaglebone.analogRead("A0", function() {});
-
-    test.equal(this.beaglebone.pins[14].mode, 1);
+    test.equal(this.beaglebone.pins[14].mode, 0);
 
     test.done();
   },
@@ -181,12 +183,14 @@ exports["BeagleBone.prototype.analogRead"] = {
   analogPin: function(test) {
     test.expect(2);
 
-    // Reading from an ANALOG pin should set its mode to 1 ("out")
     var value = 1024;
 
-
     this.analogRead = sinon.stub(bStub, "analogRead", function(pin, cb) {
-      cb(null, value);
+      var result = {
+        value: 1
+      };
+
+      cb(result);
     });
 
     var handler = function(data) {
@@ -196,7 +200,7 @@ exports["BeagleBone.prototype.analogRead"] = {
 
     this.beaglebone.analogRead(0, handler);
 
-    test.equal(this.beaglebone.pins[14].mode, 1);
+    test.equal(this.beaglebone.pins[14].mode, 0);
   },
 
   port: function(test) {
@@ -204,6 +208,10 @@ exports["BeagleBone.prototype.analogRead"] = {
 
     var port = this.port;
 
+    this.analogRead = sinon.stub(bStub, "analogRead", function (pin, cb) {
+      test.equal(port, pin);
+      test.done();
+    });
 
     var handler = function(data) {};
 
@@ -214,12 +222,17 @@ exports["BeagleBone.prototype.analogRead"] = {
     test.expect(1);
 
     var value = 1024;
-    var scaled = value >> 2;
 
+    this.analogRead = sinon.stub(bStub, "analogRead", function(pin, cb) {
+      var result = {
+        value: 1
+      };
 
+      cb(result);
+    });
 
     var handler = function(data) {
-      test.equal(data, scaled);
+      test.equal(data, value);
       test.done();
     };
 
@@ -230,12 +243,18 @@ exports["BeagleBone.prototype.analogRead"] = {
     test.expect(1);
 
     var value = 1024;
-    var scaled = value >> 2;
     var event = "analog-read-0";
 
+    this.analogRead = sinon.stub(bStub, "analogRead", function(pin, cb) {
+      var result = {
+        value: 1
+      };
+
+      cb(result);
+    });
 
     this.beaglebone.once(event, function(data) {
-      test.equal(data, scaled);
+      test.equal(data, value);
       test.done();
     });
 
@@ -249,7 +268,7 @@ exports["BeagleBone.prototype.digitalRead"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    this.port = "/sys/class/gpio/gpio18/value";
+    this.port = "P8_13";
 
     this.beaglebone = new BeagleBone();
 
@@ -267,7 +286,6 @@ exports["BeagleBone.prototype.digitalRead"] = {
   correctMode: function(test) {
     test.expect(1);
 
-    // Reading from a DIGITAL pin should set its mode to 0 ("in")
     this.beaglebone.digitalRead(3, function() {});
 
     test.equal(this.beaglebone.pins[3].mode, 0);
@@ -280,9 +298,8 @@ exports["BeagleBone.prototype.digitalRead"] = {
 
     var port = this.port;
 
-    this.readFile = sinon.stub(bStub, "readFile", function(path, flags, cb) {
-      test.equal(port, path);
-
+    this.digitalRead = sinon.stub(bStub, "digitalRead", function(pin, cb) {
+      test.equal(port, pin);
       test.done();
     });
 
@@ -294,10 +311,13 @@ exports["BeagleBone.prototype.digitalRead"] = {
   handler: function(test) {
     test.expect(1);
 
-    var value = 256;
+    var value = 1;
 
-    this.readFile = sinon.stub(bStub, "readFile", function(path, flags, cb) {
-      cb(null, value);
+    this.digitalRead = sinon.stub(bStub, "digitalRead", function(pin, cb) {
+      var result = {
+        value: 1
+      };
+      cb(result);
     });
 
     var handler = function(data) {
@@ -311,8 +331,16 @@ exports["BeagleBone.prototype.digitalRead"] = {
   event: function(test) {
     test.expect(1);
 
-    var value = 256;
+    var value = 1;
     var event = "digital-read-3";
+
+    this.digitalRead = sinon.stub(bStub, "digitalRead", function(pin, cb) {
+      var result = {
+        value: 1
+      };
+
+      cb(result);
+    });
 
 
     this.beaglebone.once(event, function(data) {
@@ -326,7 +354,7 @@ exports["BeagleBone.prototype.digitalRead"] = {
   }
 };
 
-
+/*
 exports["BeagleBone.prototype.analogWrite"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
@@ -531,4 +559,4 @@ exports["BeagleBone.prototype.pinMode (digital)"] = {
 
     test.done();
   }
-};
+};*/

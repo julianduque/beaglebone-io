@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON("package.json"),
     nodeunit: {
       tests: [
-        // "test/beaglebone.js",
+        "test/beaglebone.js",
         "test/not-implemented.js"
       ]
     },
