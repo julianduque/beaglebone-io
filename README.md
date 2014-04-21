@@ -6,6 +6,56 @@ Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick W
 
 **Work in Progress, needs testing**
 
+## Install
+
+```
+$ npm install beaglebone-io
+```
+
+## Usage
+
+``` js
+var BeagleBone = require('beaglebone-io');
+var board = new BeagleBone();
+
+board.on('ready', function () {
+  this.digitalWrite(13, this.HIGH);
+  this.analogRead('A0', function () {
+    console.log(this.value);
+  });
+});
+
+```
+
+## Pin Mappings
+
+BeagleBone Black to Arduino UNO
+
+``` js
+var pinMappings = [
+  "P8_7", // 0
+  "P8_8", // 1
+  "P8_9", // 2
+  "P8_13", // 3 - PWM
+  "P8_10", // 4
+  "P9_14", // 5 - PWM
+  "P9_16", // 6 - PWM
+  "P8_10", // 7
+  "P8_11", // 8
+  "P9_21", // 9 - PWM
+  "P9_22", // 10 - PWM
+  "P9_28", // 11 - PWM
+  "P8_12", // 12
+  "USR3",  // 13
+  "P9_39", // A0
+  "P9_40", // A1
+  "P9_37", // A2
+  "P9_38", // A3
+  "P9_35", // A4
+  "P9_36"  // A5
+];
+```
+
 ## The MIT License (MIT)
 
 Copyright (c) Julian Duque 2014
