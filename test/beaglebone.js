@@ -175,7 +175,7 @@ exports["BeagleBone.prototype.analogRead"] = {
     test.expect(1);
 
     this.beaglebone.analogRead("A0", function() {});
-    test.equal(this.beaglebone.pins[14].mode, 0);
+    test.equal(this.beaglebone.pins[14].mode, 2);
 
     test.done();
   },
@@ -200,7 +200,7 @@ exports["BeagleBone.prototype.analogRead"] = {
 
     this.beaglebone.analogRead(0, handler);
 
-    test.equal(this.beaglebone.pins[14].mode, 0);
+    test.equal(this.beaglebone.pins[14].mode, 2);
   },
 
   port: function(test) {
