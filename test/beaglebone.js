@@ -354,12 +354,14 @@ exports["BeagleBone.prototype.digitalRead"] = {
   }
 };
 
-/*
+
 exports["BeagleBone.prototype.analogWrite"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    // this.port = "/sys/class/gpio/gpio18/value";
+    this.port = "P9_39";
+
+    this.analogWrite = sinon.spy(BeagleBone.prototype, "analogWrite");
 
     this.beaglebone = new BeagleBone();
 
@@ -395,8 +397,8 @@ exports["BeagleBone.prototype.analogWrite"] = {
 
     this.beaglebone.analogWrite("A0", value);
 
-    test.ok(this.write.calledOnce);
-    test.deepEqual(this.write.firstCall.args, [value]);
+    test.ok(this.analogWrite.calledOnce);
+    test.deepEqual(this.analogWrite.firstCall.args, [ "A0", value]);
 
     test.done();
   },
@@ -418,7 +420,9 @@ exports["BeagleBone.prototype.digitalWrite"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    // this.port = "/sys/class/gpio/gpio18/value";
+    this.port = "P8_13";
+
+    this.digitalWrite = sinon.spy(BeagleBone.prototype, "digitalWrite");
 
     this.beaglebone = new BeagleBone();
 
@@ -454,8 +458,8 @@ exports["BeagleBone.prototype.digitalWrite"] = {
 
     this.beaglebone.digitalWrite(3, value);
 
-    test.ok(this.write.calledOnce);
-    test.deepEqual(this.write.firstCall.args, [value]);
+    test.ok(this.digitalWrite.calledOnce);
+    test.deepEqual(this.digitalWrite.firstCall.args, [3, value]);
 
     test.done();
   },
@@ -514,14 +518,13 @@ exports["BeagleBone.prototype.pinMode (analog)"] = {
     test.done();
   },
   analogIn: function(test) {
-    test.expect(3);
+    test.expect(2);
 
     this.beaglebone.pinMode("A0", 0);
     test.equal(this.beaglebone.pins[14].mode, 0);
 
     this.beaglebone.pinMode(0, 2);
 
-    test.equal(this.beaglebone.pins[14].direction, "in");
     test.equal(this.beaglebone.pins[14].mode, 2);
 
 
@@ -559,4 +562,4 @@ exports["BeagleBone.prototype.pinMode (digital)"] = {
 
     test.done();
   }
-};*/
+};
