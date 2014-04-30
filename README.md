@@ -4,8 +4,6 @@ Firmata-compatible BeagleBone Black device API
 
 Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick Waldron](https://github.com/rwaldron)
 
-**Work in Progress, needs testing**
-
 ## Install
 
 ```
@@ -25,6 +23,23 @@ board.on('ready', function () {
   });
 });
 
+```
+
+With Johnny-Five
+``` js
+var five = require('johnny-five');
+var BeagleBone = require('beaglebone-io');
+
+var board = new five.Board({ 
+  io: new BeagleBone()
+});
+
+board.on('ready', function () {
+  var led = new five.Led(8);
+  led.blink();
+  
+  this.repl.inject({ led: led });
+});
 ```
 
 ## Pin Mappings
