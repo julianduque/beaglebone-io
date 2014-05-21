@@ -150,6 +150,13 @@ exports["BeagleBone"] = {
       test.ok(true);
       test.done();
     });
+  },
+
+  normalize: function(test) {
+    test.expect(2);
+    test.equal(2, this.beaglebone.normalize("2"));
+    test.equal(14, this.beaglebone.normalize("A0"));
+    test.done();
   }
 };
 
