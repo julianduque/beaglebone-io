@@ -151,10 +151,11 @@ exports["BeagleBone"] = {
       test.done();
     });
   },
-
   normalize: function(test) {
-    test.expect(2);
+    test.expect(4);
     test.equal(2, this.beaglebone.normalize("2"));
+    test.equal(2, this.beaglebone.normalize("P8_9"));
+    test.equal(13, this.beaglebone.normalize("USR3"));
     test.equal(14, this.beaglebone.normalize("A0"));
     test.done();
   }
