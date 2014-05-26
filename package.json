@@ -1,6 +1,6 @@
 {
   "name": "beaglebone-io",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Firmata-compatible BeagleBone Black device API",
   "main": "lib/beaglebone",
   "scripts": {
