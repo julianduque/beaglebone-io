@@ -46,30 +46,28 @@ board.on('ready', function () {
 
 BeagleBone Black to Arduino UNO
 
-``` js
-var pinMappings = [
-  "P8_7", // 0
-  "P8_8", // 1
-  "P8_9", // 2
-  "P8_13", // 3 - PWM
-  "P8_10", // 4
-  "P9_14", // 5 - PWM
-  "P9_16", // 6 - PWM
-  "P8_11", // 7
-  "P8_12", // 8
-  "P9_21", // 9 - PWM
-  "P9_22", // 10 - PWM // Not working
-  "P9_28", // 11 - PWM // Not working
-  "P8_14", // 12
-  "USR3",  // 13
-  "P9_39", // A0
-  "P9_40", // A1
-  "P9_37", // A2
-  "P9_38", // A3
-  "P9_35", // A4
-  "P9_36"  // A5
-];
-```
+| BBB Port | Arduino Pin | Type |
+|----------|-------------|------|
+|P8_7|0|Digital|
+|P8_8|1|Digital|
+|P8_9|2|Digital|
+|P8_13|3|PWM|
+|P8_10|4|Digital|
+|P9_14|5|PWM|
+|P8_16|6|PWM|
+|P8_11|7|Digital|
+|P8_12|8|Digital|
+|P9_21|9|PWM|
+|P9_22|10|PWM - Currently not working|
+|P9_28|11|PWM - Currently not working|
+|P8_14|12|Digital|
+|USR3|13|Digital / Default Led|
+|P9_39|A0|Analog Input|
+|P9_40|A1|Analog Input|
+|P9_37|A2|Analog Input|
+|P9_38|A3|Analog Input|
+|P9_35|A5|Analog Input|
+|P9_36|A5|Analog Input|
 
 ## The MIT License (MIT)
 
