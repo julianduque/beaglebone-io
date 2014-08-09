@@ -1,6 +1,6 @@
 {
   "name": "beaglebone-io",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Firmata-compatible BeagleBone Black device API",
   "main": "lib/beaglebone",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": [
     "firmata",
     "beaglebone",
-    "fohnny-five"
+    "johnny-five"
   ],
   "author": "Julian Duque <julianduquej@gmail.com>",
   "license": "MIT",
