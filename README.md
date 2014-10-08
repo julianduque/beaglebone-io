@@ -66,7 +66,7 @@ BeagleBone Black to Arduino UNO
 |P9_40|A1|Analog Input|
 |P9_37|A2|Analog Input|
 |P9_38|A3|Analog Input|
-|P9_35|A5|Analog Input|
+|P9_35|A4|Analog Input|
 |P9_36|A5|Analog Input|
 
 ## The MIT License (MIT)
