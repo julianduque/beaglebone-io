@@ -54,7 +54,7 @@ BeagleBone Black to Arduino UNO
 |P8_13|3|PWM|
 |P8_10|4|Digital|
 |P9_14|5|PWM|
-|P8_16|6|PWM|
+|P9_16|6|PWM|
 |P8_11|7|Digital|
 |P8_12|8|Digital|
 |P9_21|9|PWM|
