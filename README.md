@@ -58,8 +58,8 @@ BeagleBone Black to Arduino UNO
 |P8_11|7|Digital|
 |P8_12|8|Digital|
 |P9_21|9|PWM|
-|P9_22|10|PWM - Currently not working|
-|P9_28|11|PWM - Currently not working|
+|P9_42|10|PWM|
+|P8_19|11|PWM|
 |P8_14|12|Digital|
 |USR3|13|Digital / Default Led|
 |P9_39|A0|Analog Input|
