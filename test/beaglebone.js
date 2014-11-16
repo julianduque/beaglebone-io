@@ -537,7 +537,7 @@ exports["BeagleBone.prototype.servoWrite"] = {
     this.beaglebone.servoWrite("3", value);
 
     test.equal(this.beaglebone.pins[3].value, value);
-    test.equal()
+    test.equal();
     test.done();
   }
 };
