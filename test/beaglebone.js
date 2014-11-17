@@ -5,15 +5,16 @@ var sinon = require("sinon");
 var b = require('bonescript');
 
 var bStub = {
-  pinMode: function (pin, mode) {},
-  digitalRead: function (pin, handler) {
+  pinMode: function(pin, mode) {},
+  digitalRead: function(pin, handler) {
     handler(null);
   },
-  analogRead: function (pin, handler) {
+  analogRead: function(pin, handler) {
     handler(null);
   },
-  digitalWrite: function (pin, value) {},
-  analogWrite: function (pin, value) {},
+  digitalWrite: function(pin, value) {},
+  analogWrite: function(pin, value) {},
+  servoWrite: function(pin, value) {},
   map: b.map
 };
 
@@ -216,7 +217,7 @@ exports["BeagleBone.prototype.analogRead"] = {
 
     var port = this.port;
 
-    this.analogRead = sinon.stub(bStub, "analogRead", function (pin, cb) {
+    this.analogRead = sinon.stub(bStub, "analogRead", function(pin, cb) {
       test.equal(port, pin);
       test.done();
     });
@@ -406,7 +407,7 @@ exports["BeagleBone.prototype.analogWrite"] = {
     this.beaglebone.analogWrite("A0", value);
 
     test.ok(this.analogWrite.calledOnce);
-    test.deepEqual(this.analogWrite.firstCall.args, [ "A0", value]);
+    test.deepEqual(this.analogWrite.firstCall.args, ["A0", value]);
 
     test.done();
   },
@@ -486,17 +487,57 @@ exports["BeagleBone.prototype.digitalWrite"] = {
 
 exports["BeagleBone.prototype.servoWrite"] = {
   setUp: function(done) {
+    this.clock = sinon.useFakeTimers();
+
+    this.port = "P8_13";
+
+    this.servoWrite = sinon.spy(BeagleBone.prototype, "servoWrite");
+
+    this.beaglebone = new BeagleBone();
+
     done();
   },
   tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
     done();
   },
-  alias: function(test) {
-    test.expect(1);
-    test.equal(
-      BeagleBone.prototype.servoWrite,
-      BeagleBone.prototype.analogWrite
-    );
+
+  mode: function(test) {
+    test.expect(2);
+
+    var value = 180;
+
+    // Set pin to INPUT...
+    this.beaglebone.pinMode("3", 0);
+    test.equal(this.beaglebone.pins[3].mode, 0);
+
+    // Writing to a pin should change its mode to 4
+    this.beaglebone.servoWrite("3", value);
+    test.equal(this.beaglebone.pins[3].mode, 4);
+    test.done();
+  },
+
+  write: function(test) {
+    test.expect(2);
+
+    var value = 90;
+
+    this.beaglebone.servoWrite("3", value);
+
+    test.ok(this.servoWrite.calledOnce);
+    test.deepEqual(this.servoWrite.firstCall.args, ["3", value]);
+    test.done();
+  },
+
+  stored: function(test) {
+    test.expect(2);
+
+    var value = 180;
+    this.beaglebone.servoWrite("3", value);
+
+    test.equal(this.beaglebone.pins[3].value, value);
+    test.equal();
     test.done();
   }
 };
