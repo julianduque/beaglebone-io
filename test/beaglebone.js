@@ -15,6 +15,7 @@ var bStub = {
   digitalWrite: function(pin, value) {},
   analogWrite: function(pin, value) {},
   servoWrite: function(pin, value) {},
+  sendI2CWriteRequest: function(address, bytes) {},
   map: b.map
 };
 
@@ -47,6 +48,8 @@ exports["BeagleBone"] = {
       name: "digitalWrite"
     }, {
       name: "servoWrite"
+    }, {
+      name: "sendI2CWriteRequest"
     }];
 
     this.proto.objects = [{
@@ -155,7 +158,7 @@ exports["BeagleBone"] = {
   normalize: function(test) {
     test.expect(4);
     test.equal(2, this.beaglebone.normalize("2"));
-    test.equal(2, this.beaglebone.normalize("P8_9"));
+    test.equal(7, this.beaglebone.normalize("P8_11"));
     test.equal(13, this.beaglebone.normalize("USR3"));
     test.equal(14, this.beaglebone.normalize("A0"));
     test.done();
@@ -277,7 +280,7 @@ exports["BeagleBone.prototype.digitalRead"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    this.port = "P8_13";
+    this.port = "P8_11";
 
     this.beaglebone = new BeagleBone();
 
@@ -295,9 +298,9 @@ exports["BeagleBone.prototype.digitalRead"] = {
   correctMode: function(test) {
     test.expect(1);
 
-    this.beaglebone.digitalRead(3, function() {});
+    this.beaglebone.digitalRead(7, function() {});
 
-    test.equal(this.beaglebone.pins[3].mode, 0);
+    test.equal(this.beaglebone.pins[7].mode, 0);
 
     test.done();
   },
@@ -314,7 +317,7 @@ exports["BeagleBone.prototype.digitalRead"] = {
 
     var handler = function(data) {};
 
-    this.beaglebone.digitalRead(3, handler);
+    this.beaglebone.digitalRead(7, handler);
   },
 
   handler: function(test) {
@@ -334,14 +337,14 @@ exports["BeagleBone.prototype.digitalRead"] = {
       test.done();
     };
 
-    this.beaglebone.digitalRead(3, handler);
+    this.beaglebone.digitalRead(7, handler);
   },
 
   event: function(test) {
     test.expect(1);
 
     var value = 1;
-    var event = "digital-read-3";
+    var event = "digital-read-7";
 
     this.digitalRead = sinon.stub(bStub, "digitalRead", function(pin, cb) {
       var result = {
@@ -359,7 +362,7 @@ exports["BeagleBone.prototype.digitalRead"] = {
 
     var handler = function(data) {};
 
-    this.beaglebone.digitalRead(3, handler);
+    this.beaglebone.digitalRead(7, handler);
   }
 };
 
@@ -429,7 +432,7 @@ exports["BeagleBone.prototype.digitalWrite"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    this.port = "P8_13";
+    this.port = "P8_11";
 
     this.digitalWrite = sinon.spy(BeagleBone.prototype, "digitalWrite");
 
@@ -449,13 +452,13 @@ exports["BeagleBone.prototype.digitalWrite"] = {
     var value = 1;
 
     // Set pin to INPUT...
-    this.beaglebone.pinMode(3, 0);
-    test.equal(this.beaglebone.pins[3].mode, 0);
+    this.beaglebone.pinMode(7, 0);
+    test.equal(this.beaglebone.pins[7].mode, 0);
 
     // Writing to a pin should change its mode to 1
-    this.beaglebone.digitalWrite(3, value);
-    test.equal(this.beaglebone.pins[3].mode, 1);
-    test.equal(this.beaglebone.pins[3].isPwm, false);
+    this.beaglebone.digitalWrite(7, value);
+    test.equal(this.beaglebone.pins[7].mode, 1);
+    test.equal(this.beaglebone.pins[7].isPwm, false);
 
     test.done();
   },
@@ -465,10 +468,10 @@ exports["BeagleBone.prototype.digitalWrite"] = {
 
     var value = 1;
 
-    this.beaglebone.digitalWrite(3, value);
+    this.beaglebone.digitalWrite(7, value);
 
     test.ok(this.digitalWrite.calledOnce);
-    test.deepEqual(this.digitalWrite.firstCall.args, [3, value]);
+    test.deepEqual(this.digitalWrite.firstCall.args, [7, value]);
 
     test.done();
   },
@@ -477,9 +480,9 @@ exports["BeagleBone.prototype.digitalWrite"] = {
     test.expect(1);
 
     var value = 1;
-    this.beaglebone.digitalWrite(3, value);
+    this.beaglebone.digitalWrite(7, value);
 
-    test.equal(this.beaglebone.pins[3].value, value);
+    test.equal(this.beaglebone.pins[7].value, value);
 
     test.done();
   }
@@ -489,7 +492,7 @@ exports["BeagleBone.prototype.servoWrite"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
 
-    this.port = "P8_13";
+    this.port = "P9_19";
 
     this.servoWrite = sinon.spy(BeagleBone.prototype, "servoWrite");
 
@@ -610,5 +613,24 @@ exports["BeagleBone.prototype.pinMode (digital)"] = {
     test.equal(this.beaglebone.pins[3].mode, 0);
 
     test.done();
+  }
+};
+
+exports["BeagleBone.prototype.sendI2CWriteRequest"] = {
+  setUp: function(done) {
+    this.clock = sinon.useFakeTimers();
+
+    this.port = "P9_19";
+
+    this.sendI2CWriteRequest = sinon.spy(BeagleBone.prototype, "sendI2CWriteRequest");
+
+    this.beaglebone = new BeagleBone();
+
+    done();
+  },
+  tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+    done();
   }
 };

@@ -32,6 +32,7 @@
     "sinon": "^1.10.3"
   },
   "dependencies": {
-    "bonescript": "^0.2.4"
+    "bonescript": "^0.2.4",
+    "i2c":"~0.1.6"
   }
 }
