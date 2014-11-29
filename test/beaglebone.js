@@ -16,6 +16,8 @@ var bStub = {
   analogWrite: function(pin, value) {},
   servoWrite: function(pin, value) {},
   sendI2CWriteRequest: function(address, bytes) {},
+  sendI2CConfig: function(){},
+  sendI2CReadRequest: function(address, length, cb){},
   map: b.map
 };
 
@@ -50,6 +52,10 @@ exports["BeagleBone"] = {
       name: "servoWrite"
     }, {
       name: "sendI2CWriteRequest"
+    }, {
+      name: "sendI2CConfig"
+    }, {
+      name: "sendI2CReadRequest"
     }];
 
     this.proto.objects = [{
@@ -618,16 +624,65 @@ exports["BeagleBone.prototype.pinMode (digital)"] = {
 
 exports["BeagleBone.prototype.sendI2CWriteRequest"] = {
   setUp: function(done) {
-    this.clock = sinon.useFakeTimers();
-
-    this.port = "P9_19";
+    var address = 0x48;
+    var bytes = 5;
 
     this.sendI2CWriteRequest = sinon.spy(BeagleBone.prototype, "sendI2CWriteRequest");
 
     this.beaglebone = new BeagleBone();
 
+    this.sendI2CWriteRequest(address, bytes);
+
+    test.ok(this.sendI2CWriteRequest.calledOnce);
+
     done();
   },
+
+  tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+    done();
+  }
+};
+
+exports["BeagleBone.prototype.sendI2CConfig"] = {
+  setUp: function(done) {
+
+    this.sendI2CConfig = sinon.spy(BeagleBone.prototype, "sendI2CConfig");
+
+    this.beaglebone = new BeagleBone();
+
+    test.ok(this.sendI2CConfig.calledOnce);
+
+    done();
+  },
+
+  tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+    done();
+  }
+};
+
+exports["BeagleBone.prototype.sendI2CReadRequest"] = {
+  setUp: function(done) {
+    var address = 0x48;
+    var bytes = 5;
+    var cb = function(){};
+
+    this.sendI2CReadRequest = sinon.spy(BeagleBone.prototype, "sendI2CReadRequest");
+
+    this.beaglebone = new BeagleBone();
+
+    this.sendI2CReadRequest(address, bytes, cb);
+
+    test.ok(this.sendI2CReadRequest.calledOnce);
+
+    test.ok(this.cb.calledOnce);
+
+    done();
+  },
+
   tearDown: function(done) {
     BeagleBone.reset();
     restore(this);
