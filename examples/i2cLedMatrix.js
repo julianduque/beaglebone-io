@@ -25,10 +25,7 @@ board.on("ready", function() {
 
   matrix.clear();
 
-console.log("clear");
-
   var msg = "johnny-five".split("");
-  console.log(msg);
 
   function next() {
     var c;
