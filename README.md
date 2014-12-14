@@ -1,6 +1,5 @@
 # BeagleBone-IO
-
-Firmata-compatible BeagleBone Black device API
+BeagleBone Black IO Plugin for Johnny-Five
 
 Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick Waldron](https://github.com/rwaldron)
 
