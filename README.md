@@ -69,6 +69,10 @@ BeagleBone Black to Arduino UNO
 |P9_35|A4|Analog Input|
 |P9_36|A5|Analog Input|
 
+For I2C:
+|P9_20|X|I2C SDA|
+|P9_19|X|I2C SCL|
+
 ## The MIT License (MIT)
 
 Copyright (c) Julian Duque 2014
