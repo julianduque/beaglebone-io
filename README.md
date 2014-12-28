@@ -74,7 +74,7 @@ For I2C:
 
 ## The MIT License (MIT)
 
-Copyright (c) Julian Duque 2014
+Copyright (c) Julian Duque, Alan Yorinks, Brian Cooke 2014
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
