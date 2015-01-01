@@ -14,6 +14,7 @@ var bStub = {
   },
   digitalWrite: function(pin, value) {},
   analogWrite: function(pin, value) {},
+  pwmWrite: function(pin, value) {},
   servoWrite: function(pin, value) {},
   sendI2CWriteRequest: function(address, bytes) {},
   sendI2CReadRequest: function(address, numBytes, cb) {},
@@ -44,6 +45,8 @@ exports["BeagleBone"] = {
       name: "analogRead"
     }, {
       name: "analogWrite"
+    }, {
+      name: "pwmWrite"
     }, {
       name: "digitalRead"
     }, {
@@ -372,7 +375,6 @@ exports["BeagleBone.prototype.digitalRead"] = {
   }
 };
 
-
 exports["BeagleBone.prototype.analogWrite"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
@@ -433,6 +435,65 @@ exports["BeagleBone.prototype.analogWrite"] = {
   }
 };
 
+exports["BeagleBone.prototype.pwmWrite"] = {
+  setUp: function(done) {
+    this.clock = sinon.useFakeTimers();
+
+    this.port = "P9_39";
+
+    this.pwmWrite = sinon.spy(BeagleBone.prototype, "pwmWrite");
+
+    this.beaglebone = new BeagleBone();
+
+    done();
+  },
+  tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+    done();
+  },
+
+  mode: function(test) {
+    test.expect(3);
+
+    var value = 255;
+
+    // Set pin to INPUT...
+    this.beaglebone.pinMode("A0", 0);
+    test.equal(this.beaglebone.pins[14].mode, 0);
+
+    // Writing to a pin should change its mode to 1
+    this.beaglebone.pwmWrite("A0", value);
+    test.equal(this.beaglebone.pins[14].mode, 3);
+    test.equal(this.beaglebone.pins[14].isPwm, true);
+
+    test.done();
+  },
+
+  write: function(test) {
+    test.expect(2);
+
+    var value = 255;
+
+    this.beaglebone.pwmWrite("A0", value);
+
+    test.ok(this.pwmWrite.calledOnce);
+    test.deepEqual(this.pwmWrite.firstCall.args, ["A0", value]);
+
+    test.done();
+  },
+
+  stored: function(test) {
+    test.expect(1);
+
+    var value = 255;
+    this.beaglebone.pwmWrite("A0", value);
+
+    test.equal(this.beaglebone.pins[14].value, value);
+
+    test.done();
+  }
+};
 
 exports["BeagleBone.prototype.digitalWrite"] = {
   setUp: function(done) {
