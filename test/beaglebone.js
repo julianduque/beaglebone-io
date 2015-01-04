@@ -683,7 +683,37 @@ exports["BeagleBone.prototype.pinMode (digital)"] = {
   }
 };
 
+exports["BeagleBone.prototype.i2cWrite"] = {
+  setUp: function(done) {
+    done();
+  },
 
+  i2cWrite: function(test) {
+    test.ok(false, 'not implemented');
+    test.done();
+  },
+
+  tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+    done();
+  }
+};
+
+exports["BeagleBone.prototype.i2cWriteReg"] = {
+  setUp: function(done) {
+    done();
+  },
+
+  i2cWriteReg: function(test) {
+    test.ok(false, 'not implemented');
+    test.done();
+  },
+
+  tearDown: function(done) {
+    done();
+  }
+};
 
 exports["BeagleBone.prototype.sendI2CWriteRequest"] = {
   setUp: function(done) {
@@ -715,6 +745,35 @@ exports["BeagleBone.prototype.sendI2CWriteRequest"] = {
   }
 };
 
+exports["BeagleBone.prototype.i2cRead"] = {
+  setUp: function(done) {
+    done();
+  },
+
+  i2cRead: function(test) {
+    test.ok(false, 'not implemented');
+    test.done();
+  },
+
+  tearDown: function(done) {
+    done();
+  }
+};
+
+exports["BeagleBone.prototype.i2cReadOnce"] = {
+  setUp: function(done) {
+    done();
+  },
+
+  i2cRead: function(test) {
+    test.ok(false, 'not implemented');
+    test.done();
+  },
+
+  tearDown: function(done) {
+    done();
+  }
+};
 
 exports["BeagleBone.prototype.sendI2ReadRequest"] = {
   setUp: function(done) {
@@ -747,7 +806,21 @@ exports["BeagleBone.prototype.sendI2ReadRequest"] = {
   }
 };
 
+exports["BeagleBone.prototype.i2cConfig"] = {
+  setUp: function(done) {
+    done();
+  },
 
+  i2cConfig: function(test) {
+    test.ok(false, 'not implemented');
+    test.done();
+  },
+
+  tearDown: function(done) {
+    done();
+  }
+
+};
 
 exports["BeagleBone.prototype.sendI2CConfig"] = {
   setUp: function(done) {
