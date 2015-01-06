@@ -764,7 +764,7 @@ exports["BeagleBone.prototype.i2cReadOnce"] = {
   }
 };
 
-exports["BeagleBone.prototype.sendI2ReadRequest"] = {
+exports["BeagleBone.prototype.sendI2CReadRequest"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
     this.sendI2CReadRequest = sinon.spy(BeagleBone.prototype, "sendI2CReadRequest");
