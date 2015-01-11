@@ -16,6 +16,7 @@ var bStub = {
   analogWrite: function(pin, value) {},
   pwmWrite: function(pin, value) {},
   servoWrite: function(pin, value) {},
+  i2cConfig: function(delay) {},
   sendI2CWriteRequest: function(address, bytes) {},
   sendI2CReadRequest: function(address, numBytes, cb) {},
   sendI2CConfig: function() {},
@@ -51,6 +52,8 @@ exports["BeagleBone"] = {
     }, {
       name: "servoWrite"
     }, {
+      name: "i2cConfig"
+    }, {
       name: "sendI2CWriteRequest"
     }, {
       name: "sendI2CConfig"
@@ -76,11 +79,13 @@ exports["BeagleBone"] = {
 
     done();
   },
+
   tearDown: function(done) {
     BeagleBone.reset();
     restore(this);
     done();
   },
+
   shape: function(test) {
     test.expect(
       this.proto.functions.length +
@@ -172,6 +177,7 @@ exports["BeagleBone"] = {
 
   normalize: function(test) {
     test.expect(4);
+
     test.equal(2, this.beaglebone.normalize("2"));
     test.equal(2, this.beaglebone.normalize("P8_9"));
     test.equal(13, this.beaglebone.normalize("USR3"));
@@ -189,6 +195,7 @@ exports["BeagleBone.prototype.analogRead"] = {
 
     done();
   },
+
   tearDown: function(done) {
     BeagleBone.reset();
     restore(this);
@@ -198,6 +205,7 @@ exports["BeagleBone.prototype.analogRead"] = {
 
     done();
   },
+
   correctMode: function(test) {
     test.expect(1);
 
@@ -606,7 +614,6 @@ exports["BeagleBone.prototype.servoWrite"] = {
   }
 };
 
-
 exports["BeagleBone.prototype.pinMode (analog)"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
@@ -795,15 +802,28 @@ exports["BeagleBone.prototype.sendI2CReadRequest"] = {
 
 exports["BeagleBone.prototype.i2cConfig"] = {
   setUp: function(done) {
+    this.clock = sinon.useFakeTimers();
+    this.i2cConfig = sinon.stub(bStub, "i2cConfig", function (delay) {});
+    this.beaglebone = new BeagleBone();
+
     done();
   },
 
   i2cConfig: function(test) {
-    test.ok(false, 'not implemented');
+    test.expect(2);
+
+    this.i2cConfig(500);
+
+    test.ok(this.i2cConfig.calledOnce);
+    test.ok(this.i2cConfig.firstCall.args, 500);
+
     test.done();
   },
 
   tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+
     done();
   }
 };
@@ -811,16 +831,19 @@ exports["BeagleBone.prototype.i2cConfig"] = {
 exports["BeagleBone.prototype.sendI2CConfig"] = {
   setUp: function(done) {
     this.clock = sinon.useFakeTimers();
-    this.sendI2CConfig = sinon.spy(BeagleBone.prototype, "sendI2CConfig");
+    this.sendI2CConfig = sinon.stub(bStub, "sendI2CConfig", function() {});
     this.beaglebone = new BeagleBone();
 
     done();
   },
 
   i2cConfig: function(test) {
-    this.sendI2CConfig = sinon.stub(bStub, "sendI2CConfig", function() {});
-    this.sendI2CConfig();
+    test.expect(2);
+
+    this.sendI2CConfig(500);
+
     test.ok(this.sendI2CConfig.calledOnce);
+    test.ok(this.sendI2CConfig.firstCall.args, 500);
 
     test.done();
   },
