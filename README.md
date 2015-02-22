@@ -9,6 +9,12 @@ Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick W
 $ npm install beaglebone-io
 ```
 
+For the best user experience with BeagleBone-IO the recommended Operating
+System is [Debian](http://beagleboard.org/latest-images). Debian supports
+the runtime modification of the Device Tree which is a feature required
+by BeagleBone-IO. If a directory matching the pattern
+`/sys/devices/bone_capemgr.*` exists, the required support is available.
+
 ## Usage
 
 ``` js
