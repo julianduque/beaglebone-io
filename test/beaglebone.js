@@ -14,16 +14,19 @@ var bStub = {
   },
   digitalWrite: function(pin, value) {},
   analogWrite: function(pin, value) {},
-  pwmWrite: function(pin, value) {},
-  servoWrite: function(pin, value) {},
-  i2cConfig: function(delay) {},
-  sendI2CWriteRequest: function(address, bytes) {},
-  sendI2CReadRequest: function(address, numBytes, cb) {},
-  sendI2CConfig: function() {},
   map: b.map
 };
 
+// Stub for the four i2c-bus methods used by beaglebone-io
+var i2cBusStub = {
+  i2cWriteSync: function(addr, length, buffer) {},
+  writeByteSync: function (addr, cmd, byte) {},
+  readI2cBlock: function (addr, cmd, length, buffer, cb) {},
+  i2cRead: function(addr, length, buffer, cb) {}
+};
+
 BeagleBone.__set__("b", bStub);
+BeagleBone.__set__("_i2cBus", i2cBusStub);
 
 function restore(target) {
   for (var prop in target) {
@@ -53,6 +56,14 @@ exports["BeagleBone"] = {
       name: "servoWrite"
     }, {
       name: "i2cConfig"
+    }, {
+      name: "i2cWrite"
+    }, {
+      name: "i2cWriteReg"
+    }, {
+      name: "i2cRead"
+    }, {
+      name: "i2cReadOnce"
     }, {
       name: "sendI2CWriteRequest"
     }, {
@@ -684,53 +695,66 @@ exports["BeagleBone.prototype.pinMode (digital)"] = {
 
 exports["BeagleBone.prototype.i2cWrite"] = {
   setUp: function(done) {
-    done();
-  },
+    this.beaglebone = new BeagleBone();
 
-  i2cWrite: function(test) {
-    test.ok(false, 'not implemented');
-    test.done();
+    done();
   },
 
   tearDown: function(done) {
     BeagleBone.reset();
     restore(this);
+
     done();
+  },
+
+  writeBytesToRegister: function(test) {
+    test.expect(3);
+
+    this.i2cWriteSync = sinon.stub(i2cBusStub, "i2cWriteSync", function(addr, length, buffer) {
+      test.equal(addr, 33);
+      test.equal(length, 5);
+      test.deepEqual(buffer, Buffer([8, 3, 4, 5, 6]));
+    });
+
+    this.beaglebone.i2cWrite(33, 8, [3, 4, 5, 6]);
+
+    test.done();
+  },
+
+  writeBytes: function(test) {
+    test.expect(3);
+
+    this.i2cWriteSync = sinon.stub(i2cBusStub, "i2cWriteSync", function(addr, length, buffer) {
+      test.equal(addr, 33);
+      test.equal(length, 4);
+      test.deepEqual(buffer, Buffer([3, 4, 5, 6]));
+    });
+
+    this.beaglebone.i2cWrite(33, [3, 4, 5, 6]);
+
+    test.done();
+  },
+
+  writeByteToRegister: function(test) {
+    test.expect(3);
+
+    this.i2cWriteReg = sinon.stub(i2cBusStub, "writeByteSync", function(addr, cmd, byte) {
+      test.equal(addr, 44);
+      test.equal(cmd, 7);
+      test.equal(byte, 12);
+    });
+
+    this.beaglebone.i2cWrite(44, 7, 12);
+
+    test.done();
   }
 };
 
 exports["BeagleBone.prototype.i2cWriteReg"] = {
   setUp: function(done) {
-    done();
-  },
-
-  i2cWriteReg: function(test) {
-    test.ok(false, 'not implemented');
-    test.done();
-  },
-
-  tearDown: function(done) {
-    done();
-  }
-};
-
-exports["BeagleBone.prototype.sendI2CWriteRequest"] = {
-  setUp: function(done) {
-    this.clock = sinon.useFakeTimers();
-    this.sendI2CWriteRequest = sinon.spy(BeagleBone.prototype, "sendI2CWriteRequest");
     this.beaglebone = new BeagleBone();
 
     done();
-  },
-
-  i2cWrite: function(test) {
-    this.sendI2CWriteRequest = sinon.stub(bStub, "sendI2CWriteRequest", function(addr, data) {});
-    this.sendI2CWriteRequest(5, 10);
-
-    test.ok(this.sendI2CWriteRequest.calledOnce);
-    test.deepEqual(this.sendI2CWriteRequest.firstCall.args, [5, 10]);
-
-    test.done();
   },
 
   tearDown: function(done) {
@@ -738,58 +762,171 @@ exports["BeagleBone.prototype.sendI2CWriteRequest"] = {
     restore(this);
 
     done();
+  },
+
+  i2cWriteReg: function(test) {
+    test.expect(3);
+
+    this.writeByteSync = sinon.stub(i2cBusStub, "writeByteSync", function(addr, cmd, byte) {
+      test.equal(addr, 44);
+      test.equal(cmd, 7);
+      test.equal(byte, 12);
+    });
+
+    this.beaglebone.i2cWriteReg(44, 7, 12);
+
+    test.done();
   }
 };
 
 exports["BeagleBone.prototype.i2cRead"] = {
   setUp: function(done) {
-    done();
-  },
+    this.clock = sinon.useFakeTimers();
+    this.beaglebone = new BeagleBone();
 
-  i2cRead: function(test) {
-    test.ok(false, 'not implemented');
-    test.done();
+    done();
   },
 
   tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
+
     done();
+  },
+
+  // i2cRead 4 bytes starting at register 2 from device at address 55.
+  // If all goes well, i2cRead will delegate the work to
+  // i2cBus#readI2cBlock and pass the bytes read to a callback.
+  readFromRegisterWithCallback: function(test) {
+    // expect 10 as there should be two iterations of continuous i2cRead
+    test.expect(10);
+
+    this.readI2cBlock = sinon.stub(i2cBusStub, "readI2cBlock", function(addr, cmd, length, buffer, cb) {
+      test.equal(addr, 55);
+      test.equal(cmd, 2);
+      test.equal(length, 4);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([10, 20, 30, 40]).copy(buffer);
+
+      cb(null, 4, buffer);
+
+      if (this.readI2cBlock.callCount === 2) {
+        test.done();
+      } else {
+        this.clock.tick(1);
+      }
+    }.bind(this));
+
+    this.beaglebone.i2cRead(55, 2, 4, function(bytesRead) {
+      test.deepEqual(bytesRead, [10, 20, 30, 40]);
+    }.bind(this));
+
+    this.clock.tick(1);
+  },
+
+  // i2cRead 4 bytes starting at register 2 from device at address 55.
+  // If all goes well, i2cRead will delegate the work to
+  // i2cBus#readI2cBlock and pass the bytes read to an event handler.
+  readFromRegisterWithEvent: function(test) {
+    // expect 10 as there should be two iterations of continuous i2cRead
+    test.expect(10);
+
+    this.readI2cBlock = sinon.stub(i2cBusStub, "readI2cBlock", function(addr, cmd, length, buffer, cb) {
+      test.equal(addr, 55);
+      test.equal(cmd, 2);
+      test.equal(length, 4);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([10, 20, 30, 40]).copy(buffer);
+
+      cb(null, 4, buffer);
+
+      if (this.readI2cBlock.callCount === 2) {
+        test.done();
+      } else {
+        this.clock.tick(1);
+      }
+    }.bind(this));
+
+    this.beaglebone.on("I2C-reply55-2", function(bytesRead) {
+      test.deepEqual(bytesRead, [10, 20, 30, 40]);
+    });
+
+    this.beaglebone.i2cRead(55, 2, 4, function(bytesRead) {});
+
+    this.clock.tick(1);
+  },
+
+  // Read 6 bytes from device at address 77.
+  // If all goes well, i2cRead will delegate the work to
+  // i2cBus#i2cRead and pass the bytes read to a callback.
+  readWithCallback: function(test) {
+    // expect 8 as there should be two iterations of continuous i2cRead
+    test.expect(8);
+
+    this.i2cRead = sinon.stub(i2cBusStub, "i2cRead", function(addr, length, buffer, cb) {
+      test.equal(addr, 77);
+      test.equal(length, 6);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([6, 5, 4, 3, 2, 1]).copy(buffer);
+
+      cb(null, 6, buffer);
+
+      if (this.i2cRead.callCount === 2) {
+        test.done();
+      } else {
+        this.clock.tick(1);
+      }
+    }.bind(this));
+
+    this.beaglebone.i2cRead(77, 6, function(bytesRead) {
+      test.deepEqual(bytesRead, [6, 5, 4, 3, 2, 1]);
+    });
+
+    this.clock.tick(1);
+  },
+
+  // Read 6 bytes from device at address 77.
+  // If all goes well, i2cRead will delegate the work to
+  // i2cBus#i2cRead and pass the bytes read to an event handler.
+  readWithEvent: function(test) {
+    // expect 8 as there should be two iterations of continuous i2cRead
+    test.expect(8);
+
+    this.i2cRead = sinon.stub(i2cBusStub, "i2cRead", function(addr, length, buffer, cb) {
+      test.equal(addr, 77);
+      test.equal(length, 6);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([6, 5, 4, 3, 2, 1]).copy(buffer);
+
+      cb(null, 6, buffer);
+
+      if (this.i2cRead.callCount === 2) {
+        test.done();
+      } else {
+        this.clock.tick(1);
+      }
+    }.bind(this));
+
+    this.beaglebone.on("I2C-reply77-0", function(bytesRead) {
+      test.deepEqual(bytesRead, [6, 5, 4, 3, 2, 1]);
+    });
+
+    this.beaglebone.i2cRead(77, 6, function() {});
+
+    this.clock.tick(1);
   }
 };
 
 exports["BeagleBone.prototype.i2cReadOnce"] = {
   setUp: function(done) {
-    done();
-  },
-
-  i2cRead: function(test) {
-    test.ok(false, 'not implemented');
-    test.done();
-  },
-
-  tearDown: function(done) {
-    done();
-  }
-};
-
-exports["BeagleBone.prototype.sendI2CReadRequest"] = {
-  setUp: function(done) {
     this.clock = sinon.useFakeTimers();
-    this.sendI2CReadRequest = sinon.spy(BeagleBone.prototype, "sendI2CReadRequest");
     this.beaglebone = new BeagleBone();
 
     done();
-  },
-
-  i2cRead: function(test) {
-    function handler() {}
-
-    this.sendI2CReadRequest = sinon.stub(bStub, "sendI2CReadRequest", function(addr, data, cb) {});
-    this.sendI2CReadRequest(5, 10, handler);
-
-    test.ok(this.sendI2CReadRequest.calledOnce);
-    test.deepEqual(this.sendI2CReadRequest.firstCall.args, [5, 10, handler]);
-
-    test.done();
   },
 
   tearDown: function(done) {
@@ -797,14 +934,130 @@ exports["BeagleBone.prototype.sendI2CReadRequest"] = {
     restore(this);
 
     done();
+  },
+
+  // Read 4 bytes starting at register 2 from device at address 55.
+  // If all goes well, i2cReadOnce will delegate the work to
+  // i2cBus#readI2cBlock and pass the bytes read to a callback.
+  readFromRegisterWithCallback: function(test) {
+    test.expect(6);
+
+    this.readI2cBlock = sinon.stub(i2cBusStub, "readI2cBlock", function(addr, cmd, length, buffer, cb) {
+      test.equal(addr, 55);
+      test.equal(cmd, 2);
+      test.equal(length, 4);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([10, 20, 30, 40]).copy(buffer);
+
+      cb(null, 4, buffer);
+    });
+
+    this.beaglebone.i2cReadOnce(55, 2, 4, function(bytesRead) {
+      test.ok(this.readI2cBlock.calledOnce);
+      test.deepEqual(bytesRead, [10, 20, 30, 40]);
+
+      test.done();
+    }.bind(this));
+
+    this.clock.tick(1);
+  },
+
+  // Read 4 bytes starting at register 2 from device at address 55.
+  // If all goes well, i2cReadOnce will delegate the work to
+  // i2cBus#readI2cBlock and pass the bytes read to an event handler.
+  readFromRegisterWithEvent: function(test) {
+    test.expect(6);
+
+    this.readI2cBlock = sinon.stub(i2cBusStub, "readI2cBlock", function(addr, cmd, length, buffer, cb) {
+      test.equal(addr, 55);
+      test.equal(cmd, 2);
+      test.equal(length, 4);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([10, 20, 30, 40]).copy(buffer);
+
+      cb(null, 4, buffer);
+    });
+
+    this.beaglebone.once("I2C-reply55-2", function(bytesRead) {
+      test.ok(this.readI2cBlock.calledOnce);
+      test.deepEqual(bytesRead, [10, 20, 30, 40]);
+
+      test.done();
+    }.bind(this));
+
+    this.beaglebone.i2cReadOnce(55, 2, 4, function(bytesRead) {});
+
+    this.clock.tick(1);
+  },
+
+  // Read 6 bytes from device at address 77.
+  // If all goes well, i2cReadOnce will delegate the work to
+  // i2cBus#i2cRead and pass the bytes read to a callback.
+  readWithCallback: function(test) {
+    test.expect(5);
+
+    this.i2cRead = sinon.stub(i2cBusStub, "i2cRead", function(addr, length, buffer, cb) {
+      test.equal(addr, 77);
+      test.equal(length, 6);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([6, 5, 4, 3, 2, 1]).copy(buffer);
+
+      cb(null, 6, buffer);
+    });
+
+    this.beaglebone.i2cReadOnce(77, 6, function(bytesRead) {
+      test.ok(this.i2cRead.calledOnce);
+      test.deepEqual(bytesRead, [6, 5, 4, 3, 2, 1]);
+
+      test.done();
+    }.bind(this));
+
+    this.clock.tick(1);
+  },
+
+  // Read 6 bytes from device at address 77.
+  // If all goes well, i2cReadOnce will delegate the work to
+  // i2cBus#i2cRead and pass the bytes read to an event handler.
+  readWithEvent: function(test) {
+    test.expect(5);
+
+    this.i2cRead = sinon.stub(i2cBusStub, "i2cRead", function(addr, length, buffer, cb) {
+      test.equal(addr, 77);
+      test.equal(length, 6);
+      test.ok(Buffer.isBuffer(buffer));
+
+      Buffer([6, 5, 4, 3, 2, 1]).copy(buffer);
+
+      cb(null, 6, buffer);
+    });
+
+    this.beaglebone.once("I2C-reply77-0", function(bytesRead) {
+      test.ok(this.i2cRead.calledOnce);
+      test.deepEqual(bytesRead, [6, 5, 4, 3, 2, 1]);
+
+      test.done();
+    }.bind(this));
+
+    this.beaglebone.i2cReadOnce(77, 6, function() {});
+
+    this.clock.tick(1);
   }
 };
 
 exports["BeagleBone.prototype.i2cConfig"] = {
   setUp: function(done) {
-    this.clock = sinon.useFakeTimers();
-    this.i2cConfig = sinon.stub(bStub, "i2cConfig", function (delay) {});
     this.beaglebone = new BeagleBone();
+    this.i2cConfig = sinon.spy(this.beaglebone, "i2cConfig");
+
+    done();
+  },
+
+  tearDown: function(done) {
+    BeagleBone.reset();
+    restore(this);
 
     done();
   },
@@ -812,46 +1065,12 @@ exports["BeagleBone.prototype.i2cConfig"] = {
   i2cConfig: function(test) {
     test.expect(2);
 
-    this.i2cConfig(500);
+    this.beaglebone.i2cConfig(500);
 
     test.ok(this.i2cConfig.calledOnce);
     test.ok(this.i2cConfig.firstCall.args, 500);
 
     test.done();
-  },
-
-  tearDown: function(done) {
-    BeagleBone.reset();
-    restore(this);
-
-    done();
   }
 };
 
-exports["BeagleBone.prototype.sendI2CConfig"] = {
-  setUp: function(done) {
-    this.clock = sinon.useFakeTimers();
-    this.sendI2CConfig = sinon.stub(bStub, "sendI2CConfig", function() {});
-    this.beaglebone = new BeagleBone();
-
-    done();
-  },
-
-  i2cConfig: function(test) {
-    test.expect(2);
-
-    this.sendI2CConfig(500);
-
-    test.ok(this.sendI2CConfig.calledOnce);
-    test.ok(this.sendI2CConfig.firstCall.args, 500);
-
-    test.done();
-  },
-
-  tearDown: function(done) {
-    BeagleBone.reset();
-    restore(this);
-
-    done();
-  }
-};
