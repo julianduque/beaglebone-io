@@ -791,6 +791,9 @@ exports["BeagleBone.prototype.i2cRead"] = {
     BeagleBone.reset();
     restore(this);
 
+    this.beaglebone.removeAllListeners("I2C-reply55-2");
+    this.beaglebone.removeAllListeners("I2C-reply77-0");
+
     done();
   },
 
@@ -932,6 +935,9 @@ exports["BeagleBone.prototype.i2cReadOnce"] = {
   tearDown: function(done) {
     BeagleBone.reset();
     restore(this);
+
+    this.beaglebone.removeAllListeners("I2C-reply55-2");
+    this.beaglebone.removeAllListeners("I2C-reply77-0");
 
     done();
   },
