@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "bonescript": "^0.2.4",
-    "i2c-bus":"^0.8.0"
+    "i2c-bus":"^0.11.2"
   }
 }
