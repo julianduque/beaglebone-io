@@ -1,6 +1,6 @@
 {
   "name": "beaglebone-io",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "BeagleBone Black IO Plugin for Johnny-Five",
   "main": "lib/beaglebone",
   "scripts": {
@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "bonescript": "^0.2.4",
-    "i2c-bus":"^0.11.2"
+    "i2c-bus": "^0.11.2"
   }
 }
