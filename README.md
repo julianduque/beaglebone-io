@@ -1,5 +1,5 @@
 # BeagleBone-IO
-BeagleBone Black IO Plugin for Johnny-Five
+BeagleBone Black IO Plugin for [Johnny-Five](http://johnny-five.io)
 
 Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick Waldron](https://github.com/rwaldron)
 
