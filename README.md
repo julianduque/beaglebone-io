@@ -1,8 +1,6 @@
 # BeagleBone-IO
 BeagleBone Black IO Plugin for [Johnny-Five](http://johnny-five.io)
 
-Heavily based on [Galileo-IO](https://github.com/rwaldron/galileo-io) by [Rick Waldron](https://github.com/rwaldron)
-
 ## Install
 
 ```
@@ -10,10 +8,7 @@ $ npm install beaglebone-io
 ```
 
 For the best user experience with BeagleBone-IO the recommended Operating
-System is [Debian](http://beagleboard.org/latest-images). Debian supports
-the runtime modification of the Device Tree which is a feature required
-by BeagleBone-IO. If a directory matching the pattern
-`/sys/devices/bone_capemgr.*` exists, the required support is available.
+System is [Debian](http://beagleboard.org/latest-images).
 
 ## Usage
 
@@ -22,12 +17,14 @@ var BeagleBone = require('beaglebone-io');
 var board = new BeagleBone();
 
 board.on('ready', function () {
-  this.digitalWrite(13, this.HIGH);
+  this.pinMode('USR3', this.MODES.OUTPUT);
+  this.digitalWrite('USR3', this.HIGH);
+
+  this.pinMode('A0', this.MODES.ANALOG);
   this.analogRead('A0', function (value) {
     console.log(value);
   });
 });
-
 ```
 
 With Johnny-Five
@@ -49,41 +46,57 @@ board.on('ready', function () {
 
 ## Pin Mappings
 
-BeagleBone Black to Arduino UNO
+| Pin | Type |
+|-----|------|
+| P8_7 or GPIO66 | INPUT, OUTPUT |
+| P8_8 or GPIO67 | INPUT, OUTPUT |
+| P8_9 or GPIO69 | INPUT, OUTPUT |
+| P8_10 or GPIO68 | INPUT, OUTPUT |
+| P8_11 or GPIO45 | INPUT, OUTPUT |
+| P8_12 or GPIO44 | INPUT, OUTPUT |
+| P8_13 or GPIO23 | INPUT, OUTPUT, SERVO, PWM |
+| P8_14 or GPIO26 | INPUT, OUTPUT |
+| P8_15 or GPIO47 | INPUT, OUTPUT |
+| P8_16 or GPIO46 | INPUT, OUTPUT |
+| P8_17 or GPIO27 | INPUT, OUTPUT |
+| P8_18 or GPIO65 | INPUT, OUTPUT |
+| P8_19 or GPIO22 | INPUT, OUTPUT, SERVO, PWM |
+| P8_26 or GPIO61 | INPUT, OUTPUT |
+| P9_11 or GPIO30 | INPUT, OUTPUT |
+| P9_12 or GPIO60 | INPUT, OUTPUT |
+| P9_13 or GPIO31 | INPUT, OUTPUT |
+| P9_14 or GPIO50 | INPUT, OUTPUT, SERVO, PWM |
+| P9_15 or GPIO48 | INPUT, OUTPUT |
+| P9_16 or GPIO51 | INPUT, OUTPUT, SERVO, PWM |
+| P9_17 or GPIO5 | INPUT, OUTPUT |
+| P9_18 or GPIO4 | INPUT, OUTPUT |
+| P9_19 | I2C2 SCL |
+| P9_20 | I2C2 SDA |
+| P9_21 or GPIO3 | INPUT, OUTPUT, SERVO, PWM |
+| P9_22 or GPIO2 | INPUT, OUTPUT, SERVO, PWM |
+| P9_23 or GPIO49 | INPUT, OUTPUT |
+| P9_24 or GPIO15 | INPUT, OUTPUT |
+| P9_26 or GPIO14 | INPUT, OUTPUT |
+| P9_27 or GPIO115 | INPUT, OUTPUT |
+| P9_30 or GPIO112 | INPUT, OUTPUT |
+| P9_33 or A4 | ANALOG |
+| P9_35 or A6 | ANALOG |
+| P9_36 or A5 | ANALOG |
+| P9_37 or A2 | ANALOG |
+| P9_38 or A3 | ANALOG |
+| P9_39 or A0 | ANALOG |
+| P9_40 or A1 | ANALOG |
+| P9_41 or GPIO20 | INPUT, OUTPUT |
+| P9_42 or GPIO7 | INPUT, OUTPUT, SERVO, PWM |
+| USR0 | OUTPUT / User LED 0 |
+| USR1 | OUTPUT / User LED 1 |
+| USR2 | OUTPUT / User LED 2 |
+| USR3 | OUTPUT / User LED 3 / Default LED |
 
-| BBB Port | Arduino Pin | Type |
-|----------|-------------|------|
-|P8_7|0|Digital|
-|P8_8|1|Digital|
-|P8_9|2|Digital|
-|P8_13|3|PWM|
-|P8_10|4|Digital|
-|P9_14|5|PWM|
-|P9_16|6|PWM|
-|P8_11|7|Digital|
-|P8_12|8|Digital|
-|P9_21|9|PWM|
-|P9_42|10|PWM|
-|P8_19|11|PWM|
-|P8_14|12|Digital|
-|USR3|13|Digital / Default Led|
-|P9_39|A0|Analog Input|
-|P9_40|A1|Analog Input|
-|P9_37|A2|Analog Input|
-|P9_38|A3|Analog Input|
-|P9_35|A4|Analog Input|
-|P9_36|A5|Analog Input|
-
-For I2C:
-
-| BBB Port   | Type     |
-| ---------- | -------- |
-| P9_20      | I2C SDA  |
-| P9_19      | I2C SCL  |
 
 ## The MIT License (MIT)
 
-Copyright (c) Julian Duque, Alan Yorinks, Brian Cooke 2014
+Copyright (c) Julian Duque, Alan Yorinks, Brian Cooke 2017
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

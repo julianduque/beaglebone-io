@@ -32,7 +32,7 @@
     "sinon": "^1.10.3"
   },
   "dependencies": {
-    "bonescript": "^0.2.4",
-    "i2c-bus": "^0.11.2"
+    "linux-io": "^0.5.6",
+    "glob": "^7.1.1"
   }
 }

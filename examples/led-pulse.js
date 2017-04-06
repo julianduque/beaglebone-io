@@ -8,8 +8,8 @@ var board = new five.Board({
 });
 
 board.on('ready', function() {
-  var led = new five.Led('GPIO46');
+  var led = new five.Led('P8_13');
 
-  led.blink(500);
+  led.pulse(1000);
 });
 
