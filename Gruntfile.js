@@ -17,12 +17,12 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON("package.json"),
     nodeunit: {
       tests: [
-        "test/beaglebone.js",
-        "test/not-implemented.js"
+        "test/beaglebone.js"
       ]
     },
     jshint: {
       options: {
+        reporterOutput: "",
         latedef: false,
         curly: true,
         eqeqeq: true,
@@ -50,13 +50,13 @@ module.exports = function(grunt) {
           "Gruntfile.js",
           "lib/**/*.js",
           "test/**/*.js",
-          "eg/**/*.js"
+          "examples/**/*.js"
         ]
       }
     },
 
     jsbeautifier: {
-      files: ["lib/**/*.js", "eg/**/*.js", "test/**/*.js"],
+      files: ["lib/**/*.js", "examples/**/*.js", "test/**/*.js"],
       options: {
         js: {
           braceStyle: "collapse",
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
           "Gruntfile.js",
           "lib/**/!(johnny-five)*.js",
           "test/**/*.js",
-          "eg/**/*.js"
+          "examples/**/*.js"
         ],
         tasks: ["default"],
         options: {
