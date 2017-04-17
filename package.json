@@ -22,17 +22,17 @@
   },
   "homepage": "https://github.com/julianduque/beaglebone-io",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-nodeunit": "^0.3.3",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-jsbeautifier": "^0.2.7",
-    "nodeunit": "^0.9.0",
-    "rewire": "^2.1.0",
-    "sinon": "^1.10.3"
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-nodeunit": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-jsbeautifier": "^0.2.13",
+    "nodeunit": "^0.11.0",
+    "rewire": "^2.5.2",
+    "sinon": "^2.1.0"
   },
   "dependencies": {
-    "bonescript": "^0.2.4",
-    "i2c-bus": "^0.11.2"
+    "linux-io": "^0.5.7",
+    "glob": "^7.1.1"
   }
 }
