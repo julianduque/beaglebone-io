@@ -18,7 +18,7 @@ Support for Linux kernel versions prior to 4.4 has been dropped.
 ## Install
 
 ```
-$ npm install beaglebone-io
+npm install beaglebone-io
 ```
 
 For the best user experience with BeagleBone-IO the recommended Operating
@@ -51,10 +51,18 @@ board.on('ready', function () {
 
 #### Using BeagleBone-IO with Johnny-Five
 
+To use BeagleBone-IO with Johnny-Five the johnny-five package needs to be
+installed.
+
+```
+npm install johnny-five
+```
+
 Blink the default LED with Johnny-Five. Built-in User LED 3 is the default
 LED. It's possible to try this program without connecting any hardware to
-the BeagleBone Black. For this program to run Johnny-Five also needs to
-be installed with the command `npm install johnny-five`
+the BeagleBone Black. Note how the `Led` constructor is called without any
+arguments. If no arguments are passed to the `Led` constructor Johnny-Five
+assumes that the default LED should be used.
 
 ``` js
 var five = require('johnny-five');
@@ -67,8 +75,22 @@ var board = new five.Board({
 board.on('ready', function () {
   var led = new five.Led();
   led.blink();
-  
-  this.repl.inject({ led: led });
+});
+```
+
+Pulse an LED connected to P8_13 with Johnny-Five.
+
+``` js
+var five = require('johnny-five');
+var BeagleBone = require('beaglebone-io');
+
+var board = new five.Board({
+  io: new BeagleBone()
+});
+
+board.on('ready', function() {
+  var led = new five.Led('P8_13');
+  led.pulse(1000);
 });
 ```
 
@@ -107,19 +129,34 @@ board.on('ready', function () {
 | P9_26 or GPIO14 | INPUT, OUTPUT | |
 | P9_27 or GPIO115 | INPUT, OUTPUT | |
 | P9_30 or GPIO112 | INPUT, OUTPUT | |
-| P9_33 or A4 | ANALOG | |
-| P9_35 or A6 | ANALOG | |
-| P9_36 or A5 | ANALOG | |
-| P9_37 or A2 | ANALOG | |
-| P9_38 or A3 | ANALOG | |
-| P9_39 or A0 | ANALOG | |
-| P9_40 or A1 | ANALOG | |
+| P9_33 or A4 | ANALOG | Don't input more than 1.8V |
+| P9_35 or A6 | ANALOG | Don't input more than 1.8V |
+| P9_36 or A5 | ANALOG | Don't input more than 1.8V |
+| P9_37 or A2 | ANALOG | Don't input more than 1.8V |
+| P9_38 or A3 | ANALOG | Don't input more than 1.8V |
+| P9_39 or A0 | ANALOG | Don't input more than 1.8V |
+| P9_40 or A1 | ANALOG | Don't input more than 1.8V |
 | P9_41 or GPIO20 | INPUT, OUTPUT | |
 | P9_42 or GPIO7 | INPUT, OUTPUT, SERVO, PWM | |
 | USR0 | OUTPUT | Built-in user LED 0 |
 | USR1 | OUTPUT | Built-in user LED 1 |
 | USR2 | OUTPUT | Built-in user LED 2 |
 | USR3 | OUTPUT | Built-in user LED 3 / Default LED |
+
+Below are two images of the BeagleBone Black expansion headers from the
+[BeagleBone 101](http://beagleboard.org/Support/bone101/).
+
+The header pins that are colored orange in the first image are reserved for
+the on-board eMMC storage and HDMI and can't be used with BeagleBone-IO.
+Although P9_25 isn't colored orange it's also reserved and can't be used by
+BeagleBone-IO.
+
+<img src="http://beagleboard.org/static/images/cape-headers.png">
+
+The following image of the expansion headers shows the GPIO numbers for the
+header pins.
+
+<img src="http://beagleboard.org/static/images/cape-headers-digital.png">
 
 ## Migrating from BeagleBone-IO v1 to v2
 

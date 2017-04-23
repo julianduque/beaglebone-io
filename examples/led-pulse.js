@@ -9,7 +9,6 @@ var board = new five.Board({
 
 board.on('ready', function() {
   var led = new five.Led('P8_13');
-
   led.pulse(1000);
 });
 
