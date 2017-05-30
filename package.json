@@ -32,7 +32,7 @@
     "sinon": "^2.1.0"
   },
   "dependencies": {
-    "linux-io": "^0.5.7",
-    "glob": "^7.1.1"
+    "linux-io": "^0.6.2",
+    "glob": "^7.1.2"
   }
 }
