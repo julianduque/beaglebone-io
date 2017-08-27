@@ -1,9 +1,15 @@
 # BeagleBone-IO
 BeagleBone Black IO Plugin for [Johnny-Five](http://johnny-five.io).
 
-BeagleBone-IO supports Node.js v0.10, v0.12, v4, v5, v6, v7 and 8.
+BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7 and 8.
 
 ## News & Updates
+
+### August-2017: Debian Stretch support
+
+BeagleBone-IO v2.2.0 adds support for Debian Stretch and the Linux 4.9 kernel.
+This is not a breaking change and v2.2.0 continues to support Debian Jessie and
+the Linux 4.4 kernel.
 
 ### April-2017: Major changes for BeagleBone-IO v2.0.0
 
