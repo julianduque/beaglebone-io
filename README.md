@@ -255,7 +255,7 @@ header pins.
 | USR2 | OUTPUT | Built-in user LED 2 |
 | USR3 | OUTPUT | Built-in user LED 3 / Default LED |
 
-Below is an images of the PocketBeagle expansion headers from the
+Below is an image of the PocketBeagle expansion headers from the
 [PocketBeagle repository on GitHub](https://github.com/beagleboard/pocketbeagle).
 
 Note that although the image indicates that GPIO109 is available on P1_3 this
