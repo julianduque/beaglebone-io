@@ -1,9 +1,15 @@
 # BeagleBone-IO
-BeagleBone Black IO Plugin for [Johnny-Five](http://johnny-five.io).
+[Johnny-Five](http://johnny-five.io) IO Plugin for the BeagleBone Black and
+PocketBeagle.
 
-BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7 and 8.
+BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
 ## News & Updates
+
+### November-2017: PocketBeagle support
+
+BeagleBone-IO v2.3.0 adds support for the
+[PocketBeagle](https://beagleboard.org/pocket).
 
 ### August-2017: Debian Stretch support
 
@@ -34,11 +40,12 @@ System is [Debian](http://beagleboard.org/latest-images).
 
 #### Standalone Usage of BeagleBone-IO
 
-Turn built-in user LED 3 on and log the value of analog input A0 to the
-console each time it changes. The BeagleBone Black has row of four built-in
-blue LEDs mounted on the board itself. User LED 3 is the LED closest to
-Ethernet port. It's possible to try this program without connecting any
-hardware to the BeagleBone Black.
+Both the BeagleBone Black and the PocketBeagle have four built-in blue user
+LEDs mounted on the board itself. The IDs for these LEDs are USR0, USR1, USR2
+and USR3. Both boards also have an analog input with the ID A0. The program
+below turns on LED USR3 and logs the value of analog input A0 to the console
+each time it changes. It's possible to try this program without connecting any
+additional hardware to the board.
 
 ``` js
 var BeagleBone = require('beaglebone-io');
@@ -57,18 +64,20 @@ board.on('ready', function () {
 
 #### Using BeagleBone-IO with Johnny-Five
 
-To use BeagleBone-IO with Johnny-Five the johnny-five package needs to be
-installed.
+To use BeagleBone-IO with Johnny-Five the beaglebone-io and the johnny-five
+packages need to be installed.
 
 ```
-npm install johnny-five
+npm install johnny-five beaglebone-io
 ```
 
-Blink the default LED with Johnny-Five. Built-in User LED 3 is the default
-LED. It's possible to try this program without connecting any hardware to
-the BeagleBone Black. Note how the `Led` constructor is called without any
-arguments. If no arguments are passed to the `Led` constructor Johnny-Five
-assumes that the default LED should be used.
+The next example blinks the default LED with Johnny-Five. The built-in LED
+with ID USR3 is the default LED on both the BeagleBone Black and the
+PocketBeagle. It's possible to try this program on either a BeagleBone Black
+or PocketBeagle without connecting any additional hardware to board. Note how
+the `Led` constructor is called without any arguments. If no arguments are
+passed to the `Led` constructor Johnny-Five assumes that the default LED
+should be used.
 
 ``` js
 var five = require('johnny-five');
@@ -84,7 +93,9 @@ board.on('ready', function () {
 });
 ```
 
-Pulse an LED connected to P8_13 with Johnny-Five.
+Pulse an LED connected to P8_13 on a BeagleBone Black with Johnny-Five. Note
+that pin ID P8_13 is specific to the BeagleBone Black so this program can't be
+run on a PocketBeagle.
 
 ``` js
 var five = require('johnny-five');
@@ -100,7 +111,25 @@ board.on('ready', function() {
 });
 ```
 
-## Supported Pins
+Pulse an LED connected to P2_1 on a PocketBeagle with Johnny-Five. Note that
+pin ID P2_1 is specific to the PocketBeagle so this program can't be run on a
+BeagleBone Black.
+
+``` js
+var five = require('johnny-five');
+var BeagleBone = require('beaglebone-io');
+
+var board = new five.Board({
+  io: new BeagleBone()
+});
+
+board.on('ready', function() {
+  var led = new five.Led('P2_1');
+  led.pulse(1000);
+});
+```
+
+## Supported Pins on the BeagleBone Black
 
 | Pin ID | Supported Modes | Comments |
 |:----|:-----|:----|
@@ -118,6 +147,7 @@ board.on('ready', function() {
 | P8_18 or GPIO65 | INPUT, OUTPUT | |
 | P8_19 or GPIO22 | INPUT, OUTPUT, SERVO, PWM | |
 | P8_26 or GPIO61 | INPUT, OUTPUT | |
+| | |
 | P9_11 or GPIO30 | INPUT, OUTPUT | |
 | P9_12 or GPIO60 | INPUT, OUTPUT | |
 | P9_13 or GPIO31 | INPUT, OUTPUT | |
@@ -144,6 +174,7 @@ board.on('ready', function() {
 | P9_40 or A1 | ANALOG | Don't input more than 1.8V |
 | P9_41 or GPIO20 | INPUT, OUTPUT | |
 | P9_42 or GPIO7 | INPUT, OUTPUT, SERVO, PWM | |
+| | |
 | USR0 | OUTPUT | Built-in user LED 0 |
 | USR1 | OUTPUT | Built-in user LED 1 |
 | USR2 | OUTPUT | Built-in user LED 2 |
@@ -163,6 +194,75 @@ The following image of the expansion headers shows the GPIO numbers for the
 header pins.
 
 <img src="http://beagleboard.org/static/images/cape-headers-digital.png">
+
+## Supported Pins on the PocketBeagle
+
+| Pin ID | Supported Modes | Comments |
+|:----|:-----|:----|
+| P1_2 or GPIO87 | INPUT, OUTPUT | |
+| P1_4 or GPIO89 | INPUT, OUTPUT | |
+| P1_6 or GPIO5 | INPUT, OUTPUT | |
+| P1_8 or GPIO2 | INPUT, OUTPUT | |
+| P1_10 or GPIO3 | INPUT, OUTPUT | |
+| P1_12 or GPIO4 | INPUT, OUTPUT | |
+| P1_19 or A0 | ANALOG | Don't input more than 1.8V |
+| P1_20 or GPIO20 | INPUT, OUTPUT | |
+| P1_21 or A1 | ANALOG | Don't input more than 1.8V |
+| P1_23 or A2 | ANALOG | Don't input more than 1.8V |
+| P1_25 or A3 | ANALOG | Don't input more than 1.8V |
+| P1_26 or GPIO12 | INPUT, OUTPUT | Optionally for I2C data |
+| P1_27 or A4 | ANALOG | Don't input more than 1.8V |
+| P1_28 or GPIO13 | INPUT, OUTPUT | Optionally for I2C clock |
+| P1_29 or GPIO117 | INPUT, OUTPUT | |
+| P1_30 or GPIO43 | INPUT, OUTPUT | |
+| P1_31 or GPIO114 | INPUT, OUTPUT | |
+| P1_32 or GPIO42 | INPUT, OUTPUT | |
+| P1_33 or GPIO111 | INPUT, OUTPUT, SERVO, PWM | |
+| P1_34 or GPIO26 | INPUT, OUTPUT | |
+| P1_35 or GPIO88 | INPUT, OUTPUT | |
+| P1_36 or GPIO110 | INPUT, OUTPUT, SERVO, PWM | |
+| | |
+| P2_1 or GPIO50 | INPUT, OUTPUT, SERVO, PWM | |
+| P2_2 or GPIO59 | INPUT, OUTPUT | |
+| P2_3 or GPIO23 | INPUT, OUTPUT, SERVO, PWM | |
+| P2_4 or GPIO58 | INPUT, OUTPUT | |
+| P2_5 or GPIO30 | INPUT, OUTPUT | |
+| P2_6 or GPIO57 | INPUT, OUTPUT | |
+| P2_7 or GPIO31 | INPUT, OUTPUT | |
+| P2_8 or GPIO60 | INPUT, OUTPUT | |
+| P2_9 or GPIO15 | INPUT, OUTPUT | |
+| P2_10 or GPIO52 | INPUT, OUTPUT | |
+| P2_11 or GPIO14 | INPUT, OUTPUT | |
+| P2_17 or GPIO65 | INPUT, OUTPUT | |
+| P2_18 or GPIO47 | INPUT, OUTPUT | |
+| P2_19 or GPIO27 | INPUT, OUTPUT | |
+| P2_20 or GPIO64 | INPUT, OUTPUT | |
+| P2_22 or GPIO46 | INPUT, OUTPUT | |
+| P2_24 or GPIO44 | INPUT, OUTPUT | |
+| P2_25 or GPIO41 | INPUT, OUTPUT | |
+| P2_27 or GPIO40 | INPUT, OUTPUT | |
+| P2_28 or GPIO116 | INPUT, OUTPUT | |
+| P2_29 or GPIO7 | INPUT, OUTPUT | |
+| P2_30 or GPIO113 | INPUT, OUTPUT | |
+| P2_31 or GPIO19 | INPUT, OUTPUT | |
+| P2_32 or GPIO112 | INPUT, OUTPUT | |
+| P2_33 or GPIO45 | INPUT, OUTPUT | |
+| P2_34 or GPIO115 | INPUT, OUTPUT | |
+| P2_35 or GPIO86 | INPUT, OUTPUT | |
+| | |
+| USR0 | OUTPUT | Built-in user LED 0 |
+| USR1 | OUTPUT | Built-in user LED 1 |
+| USR2 | OUTPUT | Built-in user LED 2 |
+| USR3 | OUTPUT | Built-in user LED 3 / Default LED |
+
+Below is an images of the PocketBeagle expansion headers from the
+[PocketBeagle repository on GitHub](https://github.com/beagleboard/pocketbeagle).
+
+Note that although the image indicates that GPIO109 is available on P1_3 this
+isn't the case as P1_3 is reserved for USB1-V_EN. In addition, the analog mode
+capabilities of P1_2, P2_35 and P2_36 are not supported by BeagleBone-IO.
+
+<img src="https://raw.githubusercontent.com/beagleboard/pocketbeagle/master/docs/PocketBeagle_pinout.png">
 
 ## Migrating from BeagleBone-IO v1 to v2
 
