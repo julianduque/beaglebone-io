@@ -8,7 +8,7 @@ var board = new five.Board({
 });
 
 board.on('ready', function() {
-  var button = new five.Button('GPIO47');
+  var button = new five.Button('P8_8');
 
   button.on('down', function() {
     console.log('down');
