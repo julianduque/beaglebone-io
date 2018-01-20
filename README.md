@@ -4,6 +4,18 @@ BeagleBone Green Wireless and PocketBeagle.
 
 BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
+## Contents
+
+ * [News & Updates](https://github.com/fivdi/beaglebone-io#news--updates)
+ * [Installation](https://github.com/fivdi/beaglebone-io#installation)
+ * [Usage](https://github.com/fivdi/beaglebone-io#usage)
+   * [Standalone Usage of BeagleBone-IO](https://github.com/fivdi/beaglebone-io#standalone-usage-of-beaglebone-io)
+   * [Using BeagleBone-IO with Johnny-Five](https://github.com/fivdi/beaglebone-io#using-beaglebone-io-with-johnny-five)
+ * [Supported Pins on the BeagleBone Black](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-beaglebone-black)
+ * [Supported Pins on the PocketBeagle](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-pocketbeagle)
+ * [Supported Pins on the BeagleBone Green Wireless](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-beaglebone-green-wireless)
+ * [License](https://github.com/fivdi/beaglebone-io#the-mit-license-mit)
+
 ## News & Updates
 
 ### January-2018: BeagleBone-IO v3.0.0
@@ -19,7 +31,7 @@ BeagleBone-IO v3.0.0 released with the following features:
 BeagleBone-IO v2.3.0 adds support for the
 [PocketBeagle](https://beagleboard.org/pocket).
 
-## Install
+## Installation
 
 ```
 npm install beaglebone-io
