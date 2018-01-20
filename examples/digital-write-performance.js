@@ -8,7 +8,7 @@ var board = new five.Board({
 });
 
 board.on('ready', function() {
-  var pin = board.io.normalize('GPIO46'),
+  var pin = board.io.normalize('P8_7'),
     writesPerSecond,
     time,
     i;
