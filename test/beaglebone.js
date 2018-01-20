@@ -3,14 +3,6 @@ var BeagleBone = rewire("../lib/beaglebone");
 var Emitter = require("events").EventEmitter;
 var sinon = require("sinon");
 
-(function() {
-  var slotsStub = {
-    add: function(name) {}
-  };
-
-  BeagleBone.__set__("slots", slotsStub);
-}());
-
 function restore(target) {
   for (var prop in target) {
     if (typeof target[prop].restore === "function") {
