@@ -6,16 +6,17 @@ BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
 ## Contents
 
- * [News & Updates](https://github.com/fivdi/beaglebone-io#news--updates)
- * [Installation](https://github.com/fivdi/beaglebone-io#installation)
- * [Usage](https://github.com/fivdi/beaglebone-io#usage)
-   * [Standalone Usage of BeagleBone-IO](https://github.com/fivdi/beaglebone-io#standalone-usage-of-beaglebone-io)
-   * [Using BeagleBone-IO with Johnny-Five](https://github.com/fivdi/beaglebone-io#using-beaglebone-io-with-johnny-five)
- * [Johnny-Five Features Supported](https://github.com/fivdi/beaglebone-io#johnny-five-features-supported)
- * [Supported Pins on the BeagleBone Black](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-beaglebone-black)
- * [Supported Pins on the PocketBeagle](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-pocketbeagle)
- * [Supported Pins on the BeagleBone Green Wireless](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-beaglebone-green-wireless)
- * [License](https://github.com/fivdi/beaglebone-io#the-mit-license-mit)
+ * [News & Updates](https://github.com/julianduque/beaglebone-io#news--updates)
+ * [Installation](https://github.com/julianduque/beaglebone-io#installation)
+ * [Usage](https://github.com/julianduque/beaglebone-io#usage)
+   * [Standalone Usage of BeagleBone-IO](https://github.com/julianduque/beaglebone-io#standalone-usage-of-beaglebone-io)
+   * [Using BeagleBone-IO with Johnny-Five](https://github.com/julianduque/beaglebone-io#using-beaglebone-io-with-johnny-five)
+ * [Johnny-Five Features Supported](https://github.com/julianduque/beaglebone-io#johnny-five-features-supported)
+ * [Supported Pins on the BeagleBone Black](https://github.com/julianduque/beaglebone-io#supported-pins-on-the-beaglebone-black)
+ * [Supported Pins on the PocketBeagle](https://github.com/julianduque/beaglebone-io#supported-pins-on-the-pocketbeagle)
+ * [Supported Pins on the BeagleBone Green Wireless](https://github.com/julianduque/beaglebone-io#supported-pins-on-the-beaglebone-green-wireless)
+ * [Working Without Sudo/Root Privileges](https://github.com/julianduque/beaglebone-io#working-without-sudoroot-privileges)
+ * [License](https://github.com/julianduque/beaglebone-io#the-mit-license-mit)
 
 ## News & Updates
 
@@ -347,6 +348,31 @@ capabilities of P1_2, P2_35 and P2_36 are not supported by BeagleBone-IO.
 | USR1 | OUTPUT | Built-in user LED 1 |
 | USR2 | OUTPUT | Built-in user LED 2 |
 | USR3 | OUTPUT | Built-in user LED 3 / Default LED |
+
+## Working Without Sudo/Root Privileges
+
+BeagleBone-IO v3.0.0 can be used without sudo/root privileges if an
+appropriate Debian image and v4.11 or higher of the Linux Kernel has been
+installed.
+
+The latest recommended Debian image for the BeagleBone that is available today
+at [BeagleBoard.org](https://beagleboard.org/latest-images) is
+`Debian 9.2 2017-10-10 4GB SD IoT`. This image comes with v4.4.91 of the Linux
+Kernel. The command `uname -r` can be used to determine which version of the
+Linux Kernel is installed.
+
+Assuming that `Debian 9.2 2017-10-10 4GB SD IoT` has has already been
+installed the following commands can be used to update to Linux Kernel v4.14.
+
+```
+sudo apt-get update
+cd /opt/scripts/tools
+git pull
+sudo ./update_kernel.sh --lts-4_14
+```
+
+After Linux Kernel v4.14 has been installed it should be possible to use
+BeagleBone-IO without sudo/root privileges.
 
 ## The MIT License (MIT)
 
