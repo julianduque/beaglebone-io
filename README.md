@@ -19,22 +19,6 @@ BeagleBone-IO v3.0.0 released with the following features:
 BeagleBone-IO v2.3.0 adds support for the
 [PocketBeagle](https://beagleboard.org/pocket).
 
-### August-2017: Debian Stretch support
-
-BeagleBone-IO v2.2.0 adds support for Debian Stretch and the Linux 4.9 kernel.
-This is not a breaking change and v2.2.0 continues to support Debian Jessie and
-the Linux 4.4 kernel.
-
-### April-2017: Major changes for BeagleBone-IO v2.0.0
-
-BeagleBone-IO v2.0.0 is a complete rewrite that fixes a number of
-long-standing issues related to support for the Linux 4.4 kernel, support
-for the latest versions of Node.js, additional pin support, performance
-improvements and improved analog to digital conversion. This results in a
-number of **BREAKING CHANGES** which are documented in the
-[migration guide](https://github.com/julianduque/beaglebone-io#migrating-from-beaglebone-io-v1-to-v2).
-Support for Linux kernel versions prior to 4.4 has been dropped.
-
 ## Install
 
 ```
