@@ -11,7 +11,8 @@ BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
  * [Usage](https://github.com/fivdi/beaglebone-io#usage)
    * [Standalone Usage of BeagleBone-IO](https://github.com/fivdi/beaglebone-io#standalone-usage-of-beaglebone-io)
    * [Using BeagleBone-IO with Johnny-Five](https://github.com/fivdi/beaglebone-io#using-beaglebone-io-with-johnny-five)
- * [Supported Pins on the BeagleBone Black](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-beaglebone-black)
+ * [Johnny-Five Features Supported](https://github.com/fivdi/beaglebone-io#using-beaglebone-io-with-johnny-five)
+ * [Supported Pins on the BeagleBone Black](https://github.com/fivdi/beaglebone-io#johnny-five-features-supported)
  * [Supported Pins on the PocketBeagle](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-pocketbeagle)
  * [Supported Pins on the BeagleBone Green Wireless](https://github.com/fivdi/beaglebone-io#supported-pins-on-the-beaglebone-green-wireless)
  * [License](https://github.com/fivdi/beaglebone-io#the-mit-license-mit)
@@ -133,6 +134,22 @@ board.on('ready', function() {
   led.pulse(1000);
 });
 ```
+
+## Johnny-Five Features Supported
+
+Feature | Support
+:--- | :---
+Analog Read | yes
+Digital Read | yes
+Digital Write | yes
+PWM | yes
+Servo | yes
+I2C | yes
+One Wire | no
+Stepper | no
+Serial/UART | no
+DAC | no
+Ping | no
 
 ## Supported Pins on the BeagleBone Black
 
