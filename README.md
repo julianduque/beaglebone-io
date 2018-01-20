@@ -6,17 +6,17 @@ BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
 ## Contents
 
- * [News & Updates](https://github.com/julianduque/beaglebone-io#news--updates)
- * [Installation](https://github.com/julianduque/beaglebone-io#installation)
- * [Usage](https://github.com/julianduque/beaglebone-io#usage)
-   * [Standalone Usage of BeagleBone-IO](https://github.com/julianduque/beaglebone-io#standalone-usage-of-beaglebone-io)
-   * [Using BeagleBone-IO with Johnny-Five](https://github.com/julianduque/beaglebone-io#using-beaglebone-io-with-johnny-five)
- * [Johnny-Five Features Supported](https://github.com/julianduque/beaglebone-io#johnny-five-features-supported)
- * [Supported Pins on the BeagleBone Black](https://github.com/julianduque/beaglebone-io#supported-pins-on-the-beaglebone-black)
- * [Supported Pins on the PocketBeagle](https://github.com/julianduque/beaglebone-io#supported-pins-on-the-pocketbeagle)
- * [Supported Pins on the BeagleBone Green Wireless](https://github.com/julianduque/beaglebone-io#supported-pins-on-the-beaglebone-green-wireless)
- * [Working Without Sudo/Root Privileges](https://github.com/julianduque/beaglebone-io#working-without-sudoroot-privileges)
- * [License](https://github.com/julianduque/beaglebone-io#the-mit-license-mit)
+ * [News & Updates](#news--updates)
+ * [Installation](#installation)
+ * [Usage](#usage)
+   * [Standalone Usage of BeagleBone-IO](#standalone-usage-of-beaglebone-io)
+   * [Using BeagleBone-IO with Johnny-Five](#using-beaglebone-io-with-johnny-five)
+ * [Johnny-Five Features Supported](#johnny-five-features-supported)
+ * [Supported Pins on the BeagleBone Black](#supported-pins-on-the-beaglebone-black)
+ * [Supported Pins on the PocketBeagle](#supported-pins-on-the-pocketbeagle)
+ * [Supported Pins on the BeagleBone Green Wireless](#supported-pins-on-the-beaglebone-green-wireless)
+ * [Working Without Sudo/Root Privileges](#working-without-sudoroot-privileges)
+ * [License](#the-mit-license-mit)
 
 ## News & Updates
 
