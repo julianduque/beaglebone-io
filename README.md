@@ -4,6 +4,20 @@ BeagleBone Green Wireless and PocketBeagle.
 
 BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
+## Contents
+
+ * [News & Updates](#news--updates)
+ * [Installation](#installation)
+ * [Usage](#usage)
+   * [Standalone Usage of BeagleBone-IO](#standalone-usage-of-beaglebone-io)
+   * [Using BeagleBone-IO with Johnny-Five](#using-beaglebone-io-with-johnny-five)
+ * [Johnny-Five Features Supported](#johnny-five-features-supported)
+ * [Supported Pins on the BeagleBone Black](#supported-pins-on-the-beaglebone-black)
+ * [Supported Pins on the PocketBeagle](#supported-pins-on-the-pocketbeagle)
+ * [Supported Pins on the BeagleBone Green Wireless](#supported-pins-on-the-beaglebone-green-wireless)
+ * [Working Without Sudo/Root Privileges](#working-without-sudoroot-privileges)
+ * [License](#the-mit-license-mit)
+
 ## News & Updates
 
 ### January-2018: BeagleBone-IO v3.0.0
@@ -19,23 +33,7 @@ BeagleBone-IO v3.0.0 released with the following features:
 BeagleBone-IO v2.3.0 adds support for the
 [PocketBeagle](https://beagleboard.org/pocket).
 
-### August-2017: Debian Stretch support
-
-BeagleBone-IO v2.2.0 adds support for Debian Stretch and the Linux 4.9 kernel.
-This is not a breaking change and v2.2.0 continues to support Debian Jessie and
-the Linux 4.4 kernel.
-
-### April-2017: Major changes for BeagleBone-IO v2.0.0
-
-BeagleBone-IO v2.0.0 is a complete rewrite that fixes a number of
-long-standing issues related to support for the Linux 4.4 kernel, support
-for the latest versions of Node.js, additional pin support, performance
-improvements and improved analog to digital conversion. This results in a
-number of **BREAKING CHANGES** which are documented in the
-[migration guide](https://github.com/julianduque/beaglebone-io#migrating-from-beaglebone-io-v1-to-v2).
-Support for Linux kernel versions prior to 4.4 has been dropped.
-
-## Install
+## Installation
 
 ```
 npm install beaglebone-io
@@ -137,6 +135,22 @@ board.on('ready', function() {
   led.pulse(1000);
 });
 ```
+
+## Johnny-Five Features Supported
+
+Feature | Support
+:--- | :---
+Analog Read | yes
+Digital Read | yes
+Digital Write | yes
+PWM | yes
+Servo | yes
+I2C | yes
+One Wire | no
+Stepper | no
+Serial/UART | no
+DAC | no
+Ping | no
 
 ## Supported Pins on the BeagleBone Black
 
@@ -335,75 +349,30 @@ capabilities of P1_2, P2_35 and P2_36 are not supported by BeagleBone-IO.
 | USR2 | OUTPUT | Built-in user LED 2 |
 | USR3 | OUTPUT | Built-in user LED 3 / Default LED |
 
+## Working Without Sudo/Root Privileges
 
-## Migrating from BeagleBone-IO v1 to v2
+BeagleBone-IO v3.0.0 can be used without sudo/root privileges if an
+appropriate Debian image and v4.11 or higher of the Linux Kernel has been
+installed.
 
-There are two **BREAKING CHANGES** in BeagleBone-IO v2 that need to be taken
-into account when migrating from v1 to v2. Both breaking changes can be seen
-when the following v1 program
+The latest recommended Debian image for the BeagleBone that is available today
+at [BeagleBoard.org](https://beagleboard.org/latest-images) is
+`Debian 9.2 2017-10-10 4GB SD IoT`. This image comes with v4.4.91 of the Linux
+Kernel. The command `uname -r` can be used to determine which version of the
+Linux Kernel is installed.
 
-``` js
-var BeagleBone = require('beaglebone-io');
-var board = new BeagleBone();
+Assuming that `Debian 9.2 2017-10-10 4GB SD IoT` has has already been
+installed the following commands can be used to update to Linux Kernel v4.14.
 
-board.on('ready', function () {
-  this.digitalWrite(12, this.HIGH);
-});
+```
+sudo apt-get update
+cd /opt/scripts/tools
+git pull
+sudo ./update_kernel.sh --lts-4_14
 ```
 
-is compared with its v2 equivalent.
-
-``` js
-var BeagleBone = require('beaglebone-io');
-var board = new BeagleBone();
-
-board.on('ready', function () {
-  this.pinMode('P8_14', this.MODES.OUTPUT);
-  this.digitalWrite('P8_14', this.HIGH);
-});
-```
-
-#### Arduino Pin Numbers
-
-In v1 each pin had a documented Arduino pin number.
-
-| BBB Port | Arduino Pin | Type |
-|----------|-------------|------|
-|P8_14|12|Digital|
-
-In v2 this is no longer the case.
-
-| Pin ID | Supported Modes | Comments |
-|:----|:-----|:----|
-| P8_14 or GPIO26 | INPUT, OUTPUT | |
-
-In v2 pin IDs should be used in place of Arduino pin numbers. For example,
-the following v1 code
-
-``` js
-  this.digitalWrite(12, this.HIGH);
-```
-
-should be replaced with the following v2 code.
-
-``` js
-  this.pinMode('P8_14', this.MODES.OUTPUT);
-```
-
-#### Setting Pin Modes Implicitly
-
-The observant reader may also have noticed the addition of the following line
-of code to the v2 example code above.
-
-``` js
-  this.pinMode('P8_14', this.MODES.OUTPUT);
-```
-
-In v1 calling `digitalWrite` implicitly set the mode of the appropriate pin
-to OUTPUT. In v2 pin modes are no longer implicitly set. Note that if you
-don't call IO Plugin methods like `digitalWrite` directly yourself then
-there is nothing to do here as Johnny-Five will explicitly set pin modes
-to the appropriate values.
+After Linux Kernel v4.14 has been installed it should be possible to use
+BeagleBone-IO without sudo/root privileges.
 
 ## The MIT License (MIT)
 
