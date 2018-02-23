@@ -68,7 +68,7 @@ board.on('ready', function () {
 });
 ```
 
-Note, calling `analogRead` or `digitalRead` initiates a new **continuous** data reading process for a pin not a single read. Further details can be seen at https://github.com/rwaldron/io-plugins#analogreadpin-handler.
+Note, calling `analogRead`, `digitalRead` or `i2cRead` initiates a new **continuous** data reading process for a pin not a single read. Further details can be seen at https://github.com/rwaldron/io-plugins#analogreadpin-handler.
 
 #### Using BeagleBone-IO with Johnny-Five
 
