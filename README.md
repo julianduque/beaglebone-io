@@ -2,7 +2,7 @@
 [Johnny-Five](http://johnny-five.io) IO Plugin for the BeagleBone Black,
 BeagleBone Green Wireless and PocketBeagle.
 
-BeagleBone-IO supports Node.js version 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
+BeagleBone-IO supports Node.js versions 4, 6, 8 and 9.
 
 ## Contents
 
@@ -68,7 +68,22 @@ board.on('ready', function () {
 });
 ```
 
-Note, calling `analogRead`, `digitalRead` or `i2cRead` initiates a new **continuous** data reading process for a pin not a single read. Further details can be seen at https://github.com/rwaldron/io-plugins#analogreadpin-handler.
+Calling `analogRead`, `digitalRead` or `i2cRead` initiates a new
+**continuous** data reading process for a pin not a single read. Further
+details can be seen at the Johnny-Five
+[IO Plugins Specification](https://github.com/rwaldron/io-plugins#reading).
+
+Analog inputs will be disabled by default on some systems and must be enabled
+before usage. To enable analog inputs remove or comment out the
+following line in `/boot/uEnv.txt`
+```
+disable_uboot_overlay_adc=1
+```
+Attempting to use analog inputs that are not enabled will typically result in
+ENOENT error messages:
+```
+Error: ENOENT: no such file or directory, open '/sys/bus/iio/devices/iio:device0/in_voltage0_raw'
+```
 
 #### Using BeagleBone-IO with Johnny-Five
 
