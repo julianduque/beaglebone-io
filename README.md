@@ -20,6 +20,11 @@ BeagleBone-IO supports Node.js versions 4, 6, 8 and 9.
 
 ## News & Updates
 
+### April-2018: BeagleBone-IO v4.0.0
+
+* Support for Node.js v0.10, v0.12, v5 and v7 removed
+* Support for Node 10 added
+
 ### January-2018: BeagleBone-IO v3.0.0
 
 BeagleBone-IO v3.0.0 released with the following features:
