@@ -11,7 +11,7 @@
     "url": "https://github.com/julianduque/beaglebone-io"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "keywords": [
     "firmata",
@@ -25,17 +25,17 @@
   },
   "homepage": "https://github.com/julianduque/beaglebone-io",
   "devDependencies": {
-    "grunt": "^1.0.2",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-nodeunit": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0",
+    "grunt": "^1.0.4",
+    "grunt-contrib-jshint": "^2.1.0",
+    "grunt-contrib-nodeunit": "^2.0.0",
+    "grunt-contrib-watch": "^1.1.0",
     "grunt-jsbeautifier": "^0.2.13",
-    "nodeunit": "^0.11.2",
-    "rewire": "^3.0.2",
-    "sinon": "^4.5.0"
+    "nodeunit": "^0.11.3",
+    "rewire": "^4.0.1",
+    "sinon": "^7.4.2"
   },
   "dependencies": {
-    "linux-io": "^1.0.1",
-    "glob": "^7.1.2"
+    "linux-io": "^1.0.4",
+    "glob": "^7.1.4"
   }
 }
