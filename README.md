@@ -2,7 +2,7 @@
 [Johnny-Five](http://johnny-five.io) IO Plugin for the BeagleBone Black,
 BeagleBone Green Wireless and PocketBeagle.
 
-BeagleBone-IO supports Node.js versions 6, 8, 10 and 12.
+BeagleBone-IO supports Node.js versions 8, 10, 12 and 14.
 
 ## Contents
 
@@ -20,28 +20,10 @@ BeagleBone-IO supports Node.js versions 6, 8, 10 and 12.
 
 ## News & Updates
 
-### September-2019: BeagleBone-IO v4.0.1
+### May-2020: BeagleBone-IO v4.1.0
 
-* Support for Node.js v4 and v9 removed
-* Support for Node.js 12 added
-
-### April-2018: BeagleBone-IO v4.0.0
-
-* Support for Node.js v0.10, v0.12, v5 and v7 removed
-* Support for Node 10 added
-
-### January-2018: BeagleBone-IO v3.0.0
-
-BeagleBone-IO v3.0.0 released with the following features:
-
-* Support for the [BeagleBone Green Wireless](http://wiki.seeed.cc/SeeedStudio_BeagleBone_Green_Wireless/)
-* Support for Linux Kernel 4.11+
-* Root privileges no longer required when running on Linux Kernel 4.11+
-
-### November-2017: PocketBeagle Support
-
-BeagleBone-IO v2.3.0 adds support for the
-[PocketBeagle](https://beagleboard.org/pocket).
+* Support for Node.js 6 removed
+* Support for Node.js 14 added
 
 ## Installation
 
