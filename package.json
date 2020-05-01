@@ -1,6 +1,6 @@
 {
   "name": "beaglebone-io",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "BeagleBone Black IO Plugin for Johnny-Five",
   "main": "lib/beaglebone",
   "scripts": {
