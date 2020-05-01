@@ -2,7 +2,7 @@
 [Johnny-Five](http://johnny-five.io) IO Plugin for the BeagleBone Black,
 BeagleBone Green Wireless and PocketBeagle.
 
-BeagleBone-IO supports Node.js versions 6, 8, 10 and 12.
+BeagleBone-IO supports Node.js versions 8, 10 and 12.
 
 ## Contents
 
